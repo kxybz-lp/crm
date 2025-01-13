@@ -1,0 +1,241 @@
+body {
+  height: 100%;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+}
+
+label {
+  font-weight: 700;
+}
+
+html {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+#app {
+  height: 100%;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+  padding: 0;
+  margin: 0;
+}
+a:focus,
+a:active {
+  outline: none;
+}
+
+a,
+a:focus,
+a:hover {
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+}
+.red {
+  color: #f00;
+  cursor: pointer;
+}
+div:focus {
+  outline: none;
+}
+.mb15 {
+  margin-bottom: 15px;
+}
+:root {
+  --color: #004c59;
+  --el-color-primary: #004c59;
+}
+.el-button--default {
+  height: 30px;
+}
+.el-button--primary {
+  --el-button-active-color: #076575;
+  --el-button-hover-bg-color: #076575;
+  --el-button-outline-color: #076575;
+  --el-button-hover-border-color: #076575;
+  --el-button-active-bg-color: #076575;
+  --el-button-disabled-bg-color: #758595;
+  --el-button-disabled-border-color: #758595;
+}
+.el-select,
+.el-cascader {
+  width: 100%;
+}
+/* .el-input__wrapper {
+  width: 100% !important;
+} */
+.el-menu {
+  border: none;
+}
+.el-pagination {
+  justify-content: center;
+  margin: 20px 0 10px;
+}
+.el-drawer__header {
+  margin-bottom: 10px;
+}
+.el-drawer__body {
+  padding: 0;
+}
+/* .el-dialog__body {
+  padding: 15px !important;
+} */
+.el-icon.is-loading {
+  color: #fff !important;
+}
+
+.flex {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.flex-v {
+  -webkit-box-orient: vertical;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.flex-1 {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.flex-align-center {
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.flex-pack-center {
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.flex-pack-justify {
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+}
+.el-button--theme {
+  color: #fff;
+  background-color: var(--color);
+  border-color: var(--color);
+}
+.el-button--strict {
+  color: #fff;
+  background-color: #2e6c77;
+  border-color: #2e6c77;
+}
+.el-button--18bc9c {
+  color: #fff;
+  background-color: #18bc9c;
+  border-color: #18bc9c;
+}
+.el-date-table td.current:not(.disabled) .el-date-table-cell__text,
+.el-date-table td.today.end-date .el-date-table-cell__text,
+.el-date-table td.today.start-date .el-date-table-cell__text {
+  color: #fff !important;
+}
+.el-form-item--small .el-form-item__label {
+  font-weight: 700;
+}
+.el-pager li {
+  outline: none !important;
+}
+.el-card {
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.05) !important;
+}
+.el-table .descending .sort-caret.descending {
+  border-top-color: var(--color) !important;
+}
+.el-pagination {
+  justify-content: center;
+  margin: 20px 0 10px;
+}
+.el-pagination.is-background .el-pager li:not(.is-disabled).is-active {
+  background-color: var(--color) !important;
+}
+.el-pager li:hove {
+  color: var(--color) !important;
+}
+.el-pagination button:hover {
+  color: var(--color) !important;
+}
+
+.el-pagination.is-background .el-pager li:not(.is-disabled):hover {
+  color: var(--color) !important;
+}
+.el-pagination.is-background .el-pager li.is-active:hover {
+  color: #fff !important;
+}
+.el-radio__input.is-checked .el-radio__inner,
+.el-checkbox__input.is-checked .el-checkbox__inner,
+.el-checkbox__input.is-indeterminate .el-checkbox__inner {
+  border-color: var(--color) !important;
+  background: var(--color) !important;
+}
+.el-radio__input.is-checked + .el-radio__label {
+  color: var(--color) !important;
+}
+.el-textarea__inner:hover {
+  border-color: var(--color) !important;
+}
+.el-select-dropdown__item.selected,
+.el-date-table td.today span,
+.el-button--text:focus,
+.el-button--text:hover {
+  color: var(--color) !important;
+}
+.el-button--text {
+  color: var(--color) !important;
+}
+.el-input__inner:focus,
+.el-input__inner:hover {
+  border-color: var(--color) !important;
+}
+.el-checkbox__input.is-checked + .el-checkbox__label {
+  color: var(--color) !important;
+}
+
+.app-container {
+  background: #f0f2f5;
+  margin: 15px;
+}
+.app-header {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #f6f6f6;
+  margin-bottom: 15px;
+}
+.app-header-l {
+  margin-bottom: 8px;
+}
+.app-body {
+  padding-bottom: 20px;
+}
+.search-form {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.search-form .el-form-item {
+  margin-right: 10px;
+}
