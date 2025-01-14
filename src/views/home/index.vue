@@ -217,7 +217,7 @@
           </template>
           <el-table :data="userRank" border stripe
             :header-cell-style="{ color: '#2c3e50', backgroundColor: '#f2f2f2' }" id="card-rank">
-            <el-table-column prop="user_mobile" label="会员昵称" min-width="90" />
+            <el-table-column prop="user_mobile" label="会员信息" min-width="90" />
             <el-table-column prop="order_number" label="订单数" />
             <el-table-column prop="sales_volume" label="实际支付金额 (元)" />
           </el-table>
