@@ -119,17 +119,8 @@
             </el-link>
           </el-col>
           <el-col :md="12" :lg="6" :offset="0" v-permission="127" class="operation-tool">
-            <el-link href="/goods/order" :underline="false">
-              <p class="operation-tool-icon" style="background: #f15858;"> <el-icon :size="16"
-                  color="#fff">
-                  <List />
-                </el-icon></p>
-              <p>订单管理</p>
-            </el-link>
-          </el-col>
-          <el-col :md="12" :lg="6" :offset="0" v-permission="127" class="operation-tool">
             <el-link href="/goods/index" :underline="false">
-              <p class="operation-tool-icon" style="background: #004c59;"> <el-icon :size="16"
+              <p class="operation-tool-icon" style="background: #f15858;"> <el-icon :size="16"
                   color="#fff">
                   <GoodsFilled />
                 </el-icon></p>
@@ -137,20 +128,56 @@
             </el-link>
           </el-col>
           <el-col :md="12" :lg="6" :offset="0" v-permission="127" class="operation-tool">
+            <el-link href="/goods/category" :underline="false">
+              <p class="operation-tool-icon" style="background: #004c59;"> <el-icon :size="16"
+                  color="#fff">
+                  <Menu />
+                </el-icon></p>
+              <p>商品分类</p>
+            </el-link>
+          </el-col>
+          <el-col :md="12" :lg="6" :offset="0" v-permission="127" class="operation-tool">
             <el-link href="/system/store" :underline="false">
               <p class="operation-tool-icon" style="background: #139dff;"> <el-icon :size="16"
                   color="#fff">
-                  <Edit />
+                  <School />
                 </el-icon></p>
               <p>门店管理</p>
             </el-link>
           </el-col>
           <el-col :md="12" :lg="6" :offset="0" v-permission="127" class="operation-tool">
-            <el-link href="/goods/analysis" :underline="false">
+            <el-link href="/goods/order" :underline="false">
               <p class="operation-tool-icon"> <el-icon :size="16" color="#fff">
+                  <Briefcase />
+                </el-icon></p>
+              <p>订单管理</p>
+            </el-link>
+          </el-col>
+          <el-col :md="12" :lg="6" :offset="0" v-permission="127" class="operation-tool">
+            <el-link href="/goods/analysis" :underline="false">
+              <p class="operation-tool-icon" style="background: #f15858;"> <el-icon :size="16"
+                  color="#fff">
                   <DataAnalysis />
                 </el-icon></p>
               <p>数据统计</p>
+            </el-link>
+          </el-col>
+          <el-col :md="12" :lg="6" :offset="0" v-permission="127" class="operation-tool">
+            <el-link href="/express" :underline="false">
+              <p class="operation-tool-icon" style="background: #004c59;"> <el-icon :size="16"
+                  color="#fff">
+                  <Van />
+                </el-icon></p>
+              <p>物流公司</p>
+            </el-link>
+          </el-col>
+          <el-col :md="12" :lg="6" :offset="0" v-permission="127" class="operation-tool">
+            <el-link href="/goods/sku" :underline="false">
+              <p class="operation-tool-icon" style="background: #139dff;"> <el-icon :size="16"
+                  color="#fff">
+                  <Flag />
+                </el-icon></p>
+              <p>商品规格</p>
             </el-link>
           </el-col>
         </el-row>
