@@ -4,7 +4,7 @@
       <el-scrollbar>
         <div class="logo">
           <img :src="logo" :width="$store.state.collapse ? '25' : '40'" alt="logo" />
-          <p v-show="!$store.state.collapse">订单系统</p>
+          <p v-show="!$store.state.collapse">CRM系统</p>
         </div>
         <el-menu :default-active="currentRoute" background-color="var(--color)" text-color="#fff"
           active-text-color="#fff" :collapse="$store.state.collapse" :collapse-transition="false"

@@ -28,8 +28,8 @@
         :header-cell-style="{ color: '#2c3e50', backgroundColor: '#f2f2f2' }"
         @selection-change="handleSelectionChange" v-loading="loading">
         <el-table-column type="selection" prop="id" width="55"> </el-table-column>
-        <el-table-column prop="name" label="客户姓名" min-width="100"> </el-table-column>
-        <el-table-column prop="branch_name" label="所属公司" min-width="120"> </el-table-column>
+        <el-table-column prop="user_mobile" label="客户信息" min-width="100"> </el-table-column>
+        <!-- <el-table-column prop="branch_name" label="所属公司" min-width="120"> </el-table-column> -->
         <el-table-column prop="status" label="状态" min-width="120">
           <template #default="scope">
             <el-tag size="small" :type="scope.row.status == 1 ? 'success' : 'danger'">
