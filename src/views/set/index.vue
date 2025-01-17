@@ -242,13 +242,13 @@ const validateUploadAliyunAccessKeySecret = (rule, value, callback) => {
   }
 }
 const form = reactive({
+  id: 10001,
   name: '',
   description: '',
   logo: '',
   cdn: '',
   allow_ip: '',
   file_setting: '',
-  traces: null,
   trade: {
     close_hours: 24,
     receive_days: 7,
@@ -402,7 +402,6 @@ const handleTabChange = (tab) => {
 onMounted(() => {
   getDetail(10001)
 })
-// getDetail(10001)
 
 const getDetail = (id) => {
   loading.value = true
@@ -411,7 +410,98 @@ const getDetail = (id) => {
     .then((res) => {
       if (res.code > 0) {
         const result = res.result
-        console.log(result)
+        if (result.trade.length == 0) {
+          result.trade = {
+            close_hours: 24,
+            receive_days: 7,
+            refund_days: 7,
+          }
+        }
+        if (result.upload.length == 0) {
+          result.upload = {
+            default: 'local',
+            engine: {
+              aliyun: {
+                access_key_id: '',
+                access_key_secret: '',
+                bucket: '',
+                domain: 'http://',
+              },
+              local: null,
+            },
+          }
+        }
+        if (result.notify.length == 0) {
+          result.notify = {
+            default: 'aliyun',
+            receive_mobile: '13710393639',
+            engine: {
+              aliyun: {
+                access_key_id: '',
+                access_key_secret: '',
+                name: '',
+                template_code: '',
+                sign_name: '星艺装饰',
+              },
+              local: null,
+            },
+          }
+        }
+
+        if (result.wc_mini.length == 0) {
+          result.wc_mini = {
+            app_id: '',
+            app_secret: '',
+          }
+        }
+
+        if (result.wx_pay.length == 0) {
+          result.wx_pay = {
+            app_id: '',
+            api_key: '',
+            mch_id: '',
+            notify_url: '',
+            sslcert_path: '',
+            sslkey_path: '',
+            trade_type: '',
+          }
+        }
+
+        if (result.mp_info.length == 0) {
+          result.mp_info = {
+            app_id: '',
+            app_secret: '',
+            token: '',
+            encodingaes_key: '',
+          }
+        }
+
+        if (result.traces.length == 0) {
+          result.traces = {
+            enable: 0,
+            default: 'kd100',
+            engine: {
+              aliyun: {
+                access_key_id: '',
+                access_key_secret: '',
+                name: '',
+                template_code: '',
+                sign_name: '星艺装饰',
+              },
+              kd100: {
+                customer: '',
+                key: '',
+              },
+            },
+          }
+        } else {
+          result.traces.enable = parseInt(result.traces.enable)
+        }
+        console.log(result.freight_rule)
+
+        for (const key in form) {
+          form[key] = result[key]
+        }
       } else {
         toast(res.message || 'error', 'error')
         return false
@@ -434,7 +524,7 @@ const submit = () => {
     }
     loading.value = true
     setting
-      .edit(form)
+      .edit(form.id, form)
       .then((res) => {
         if (res.code > 0) {
           toast('数据更新成功')
