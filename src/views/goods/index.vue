@@ -27,7 +27,7 @@
       <el-table ref="multipleTableRef" :data="dataList" style="width: 100%"
         :header-cell-style="{ color: '#2c3e50', backgroundColor: '#f2f2f2' }"
         @sort-change="sortChange" @selection-change="handleSelectionChange" v-loading="loading"
-        tooltip-effect="light">
+        :element-loading-text="loadingText" tooltip-effect="light">
         <el-table-column type="selection" prop="goods_id" width="55" />
         <el-table-column prop="goods_id" label="商品ID" width="80" />
         <el-table-column label="商品图片" width="100">
@@ -50,8 +50,10 @@
         </el-table-column>
         <el-table-column prop="goods_sort" label="排序" width="100" />
         <el-table-column prop="create_time" label="添加时间" min-width="140" show-overflow-tooltip />
-        <el-table-column label="操作" min-width="140">
+        <el-table-column label="操作" width="240">
           <template #default="scope">
+            <el-button v-permission="180" v-if="params.tab !== 'recyc'" size="small" type="warning"
+              @click="handlEwm(scope.row.goods_id)"> 生成二维码 </el-button>
             <el-button v-permission="158" v-if="params.tab !== 'recyc'" size="small" type="primary"
               @click="$router.push('/goods/edit/' + scope.row.goods_id)">
               编辑 </el-button>
@@ -90,6 +92,14 @@
         </span>
       </template>
     </el-dialog>
+    <!-- 图片预览 -->
+    <div class="goods-image__preview">
+      <!-- <el-image ref="imageRef" style="width: 100px; height: 100px" :src="url" :zoom-rate="1.2"
+        :max-scale="7" :min-scale="0.2" :preview-src-list="srcList" show-progress :initial-index="0"
+        fit="cover" /> -->
+      <el-image-viewer v-if="showPreview" :url-list="srcList" :initial-index="0"
+        @close="hidePreview" />
+    </div>
   </div>
 </template>
   <script setup>
@@ -292,4 +302,46 @@ const handleSwitch = (val, row) => {
       row.statusLoading = false
     })
 }
+// 生成二维码
+// const srcList = ref([])
+// const url = 'https://xystcdn.xydec.com.cn/uploads/ewm/goods/goods_14.jpg'
+const loadingText = ref('数据加载中...')
+const srcList = ref([])
+const showPreview = ref(false)
+const handlEwm = (goods_id) => {
+  loading.value = true
+  goods
+    .ewm({ goods_id })
+    .then((res) => {
+      if (res.code > 0) {
+        srcList.value.push(res.result.path)
+        toast('二维码生成成功')
+        showPreview.value = true
+      } else {
+        toast(res.message, 'error')
+      }
+    })
+    .finally(() => {
+      loading.value = false
+    })
+}
+const hidePreview = () => {
+  srcList.value = []
+  showPreview.value = false
+}
 </script>
+<style lang="scss" scoped>
+.goods-image__error .image-slot {
+  font-size: 30px;
+}
+.goods-image__error .image-slot .el-icon {
+  font-size: 30px;
+}
+.goods-image__error .el-image {
+  width: 100%;
+  height: 200px;
+}
+:deep(.el-image-viewer__canvas) img {
+  width: 400px;
+}
+</style>

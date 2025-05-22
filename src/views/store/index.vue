@@ -123,7 +123,7 @@
           <el-input minlength="2" maxlength="20" show-word-limit v-model="form.name"></el-input>
         </el-form-item>
         <el-form-item label="所在区域" prop="region_id">
-          <el-select v-model="form.region_id" placeholder="选择区域" clearable @clear="getData(1)">
+          <el-select v-model="form.region_id" placeholder="选择区域">
             <el-option :value="item.id" :label="item.name" v-for="item in regionList"
               :key="item.id"></el-option>
           </el-select>
@@ -160,7 +160,7 @@ import ListHeader from '@/components/ListHeader.vue'
 import store from '@/api/store'
 import { toast, elLoading, closeElLoading } from '@/utils/utils'
 import { useInitTable, useInitForm } from '@/hooks/useCommon'
-const { loading, count, dataList, params, getData, handleCurrentChange, handleSizeChange, sortChange, handleDelete, handleSelectionChange, multipleTableRef, handleMultiDelete } = useInitTable({
+const { loading, count, dataList, params, getData, handleCurrentChange, handleSizeChange, sortChange, handleDelete, handleSelectionChange, multipleTableRef } = useInitTable({
   api: store,
   params: {
     page: 1,
@@ -175,7 +175,7 @@ const { loading, count, dataList, params, getData, handleCurrentChange, handleSi
 
 const showSearch = ref(false) // 高级搜索
 const searchMoreRef = ref()
-const { dialogTitle, formDialogRef, formRef, rules, form, editId, handleAdd, handleEdit, handleSubmit, dialogClosed } = useInitForm({
+const { dialogTitle, formDialogRef, formRef, rules, form, handleAdd, handleEdit, handleSubmit, dialogClosed } = useInitForm({
   api: store,
   getData,
   form: {
@@ -234,7 +234,9 @@ const { dialogTitle, formDialogRef, formRef, rules, form, editId, handleAdd, han
       },
     ],
   },
+  // 编辑后继续新增，数据出现id导致无法新增
   fliterParam(row) {
+    if (formRef.value) formRef.value.clearValidate()
     areaList.value.forEach((item) => {
       if (item.id == row.province_id) {
         item.children.forEach((itm) => {
@@ -244,7 +246,8 @@ const { dialogTitle, formDialogRef, formRef, rules, form, editId, handleAdd, han
         })
       }
     })
-    for (const key in row) {
+
+    for (const key in form) {
       form[key] = row[key]
     }
   },

@@ -48,6 +48,10 @@ const goods = {
   del(id) {
     return post('/crm/goods/del', { id })
   },
+  // 生成二维码
+  ewm(params) {
+    return post('/crm/goods/create_ewm', params)
+  },
   // 规格新增
   create_spec(params) {
     return post('/crm/goods/addSpec', params)

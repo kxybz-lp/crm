@@ -80,7 +80,7 @@
               </el-table-column>
               <el-table-column prop="goods_price" label="商品单价" />
               <el-table-column prop="total_num" label="购买数量" />
-              <el-table-column prop="goods_price" label="商品总价" />
+              <el-table-column prop="total_price" label="商品总价" />
             </el-table>
             <el-row class="order_goods_notes">
               <el-col class="order_goods_note" :span="24">订单总额： ￥{{ detail. total_price}}</el-col>

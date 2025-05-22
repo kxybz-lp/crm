@@ -24,7 +24,7 @@ defineProps({
 const beforeUpload = (file) => {
   return new Promise((resolve, reject) => {
     // 检查文件大小
-    const maxSize = 2 * 1024 * 1024 // 2MB
+    const maxSize = 2 * 1024 * 1024 // 2MB = (1024 * 1024 * 2) = 2097152 字节
     if (file.size > maxSize) {
       toast('文件大小不能超过 2MB!', 'error')
       reject(false)

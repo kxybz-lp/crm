@@ -164,12 +164,12 @@
           <template #default="scope">
             <el-row style="margin-bottom: 10px;">
               <el-tag size="small" type="success" v-if="scope.row.pay_status == 20">已支付</el-tag>
-              <el-tag size="small" type="danger" v-if="scope.row.pay_status == 10">待支付</el-tag>
+              <el-tag size="small" type="info" v-if="scope.row.pay_status == 10">待支付</el-tag>
             </el-row>
             <el-row style="margin-bottom: 10px;">
               <el-tag size="small" type="success"
                 v-if="scope.row.delivery_status == 20">已发货</el-tag>
-              <el-tag size="small" type="danger" v-if="scope.row.delivery_status == 10">待发货</el-tag>
+              <el-tag size="small" type="info" v-if="scope.row.delivery_status == 10">待发货</el-tag>
               <el-tag size="small" type="warning"
                 v-if="scope.row.delivery_status == 30">部分发货</el-tag>
             </el-row>
@@ -207,7 +207,8 @@
                   <el-dropdown-item
                     v-if="scope.row.pay_status == 10 && scope.row.order_status == 10"
                     @click="handleUpdate(scope.row)">订单改价</el-dropdown-item>
-                  <el-dropdown-item>立即退款</el-dropdown-item>
+                  <el-dropdown-item @click="handleCancel(scope.row)"
+                    v-if="scope.row.pay_status == 20 && scope.row.delivery_status == 10 && scope.row.order_status == 10">立即退款</el-dropdown-item>
                   <el-dropdown-item
                     @click="handleDelete(scope.row.order_id)">删除订单</el-dropdown-item>
                 </el-dropdown-menu>
@@ -377,7 +378,7 @@
           <el-input show-word-limit v-model="updateForm.order_id" disabled></el-input>
         </el-form-item>
         <el-form-item label="订单金额" prop="pay_price">
-          <el-input show-word-limit v-model="updateForm.pay_price"></el-input>
+          <el-input show-word-limit v-model="updateForm.order_price"></el-input>
         </el-form-item>
         <el-form-item label="运费金额" prop="express_price">
           <el-input show-word-limit v-model="updateForm.express_price"></el-input>
@@ -708,7 +709,6 @@ const updateFormDialogRef = ref(null)
 const updateFormRef = ref(null)
 const updateForm = reactive({
   order_id: '',
-  pay_price: '',
   order_price: '',
   express_price: '',
 })
@@ -724,7 +724,6 @@ const updateRules = reactive({
 const handleUpdate = (order) => {
   updateForm.order_id = order.order_id
   updateForm.order_price = order.order_price
-  updateForm.pay_price = order.pay_price
   updateForm.express_price = order.express_price
   updateFormDialogRef.value.openFormDialog()
 }
@@ -737,6 +736,7 @@ const handleUpdateSubmit = () => {
         if (res.code > 0) {
           toast('订单操作成功')
           getData()
+          updateFormDialogRef.value.closeFormDialog()
         } else {
           toast(res.message || 'error', 'error')
           return false
@@ -744,7 +744,6 @@ const handleUpdateSubmit = () => {
       })
       .finally(() => {
         loading.value = false
-        updateFormDialogRef.value.closeFormDialog()
       })
   })
 }

@@ -12,7 +12,7 @@
               </el-radio-group>
             </el-form-item>
             <el-form-item label="商品名称" prop="goods_name">
-              <el-input v-model="form.goods_name" placeholder="请输入商品名称" minlength="2" maxlength="20"
+              <el-input v-model="form.goods_name" placeholder="请输入商品名称" minlength="2" maxlength="50"
                 show-word-limit />
             </el-form-item>
             <el-form-item label="商品分类" prop="category_id">
