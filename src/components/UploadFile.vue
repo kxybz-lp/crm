@@ -1,10 +1,19 @@
 <template>
-  <el-upload :action="uploadImageAction" multiple :before-upload="beforeUpload" :headers="{
+  <el-upload
+    :action="uploadImageAction"
+    multiple
+    :before-upload="beforeUpload"
+    :headers="{
       token,
-    }" name="file" :data="data" :on-success="uploadSuccess" :on-error="uploadError">
+    }"
+    name="file"
+    :data="data"
+    :on-success="uploadSuccess"
+    :on-error="uploadError"
+  >
     <el-button>
       上传
-      <el-icon class="el-icon--right" style="margin-left: 6px;">
+      <el-icon class="el-icon--right" style="margin-left: 6px">
         <Upload />
       </el-icon>
     </el-button>
@@ -34,10 +43,10 @@ const beforeUpload = (file) => {
     const image = new Image()
     image.onload = () => {
       // 检查图片的宽度和高度
-      const maxWidth = 1000
-      const maxHeight = 1000
+      const maxWidth = 2000
+      const maxHeight = 2000
       if (image.width > maxWidth || image.height > maxHeight) {
-        toast('图片宽度和高度不能大于 1000px!', 'error')
+        toast('图片宽度和高度不能大于 2000px!', 'error')
         reject(false)
       }
       resolve(file)
