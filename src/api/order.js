@@ -24,6 +24,10 @@ const order = {
   update_price(id, params) {
     return post(`/crm/order/updatePrice/${id}`, params)
   },
+  // 发票
+  update_invoice(id, params) {
+    return post(`/crm/order/updateInvoice/${id}`, params)
+  },
   // 详情
   read(id) {
     return post(`/crm/order/read/${id}`)
