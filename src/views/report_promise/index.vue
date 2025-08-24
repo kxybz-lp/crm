@@ -9,33 +9,9 @@
             </el-form-item>
           </el-col>
           <el-col :md="6" :offset="0">
-            <el-form-item label="状态">
-              <el-select v-model="params.status" placeholder="选择状态" clearable @clear="getData(1)">
-                <el-option value="1" label="在营"></el-option>
-                <el-option value="0" label="关闭"></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :md="6" :offset="0">
             <el-form-item label="一级区域">
               <el-select v-model="params.region_id" placeholder="选择区域" clearable @clear="getData(1)">
                 <el-option :value="item.id" :label="item.name" v-for="item in regionList" :key="item.id"></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :md="6" :offset="0">
-            <el-form-item label="所在省">
-              <el-select v-model="params.province_id" filterable placeholder="选择或搜索省" clearable @change="handleProvinceChange" @clear="getData(1)">
-                <el-option :value="item.id" :label="item.areaname" v-for="item in province" :key="item.id"></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :md="6" :offset="0">
-            <el-form-item label="所在市">
-              <el-select v-model="params.city_id" filterable placeholder="选择或搜索市" clearable @clear="getData(1)">
-                <el-option :value="item.id" :label="item.areaname" v-for="item in city" :key="item.id"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -51,26 +27,28 @@
       </el-form>
       <ListHeader
         ref="headerRef"
-        action="https://api.xydec.com.cn/crm/store/import"
-        :rule="{ create: 62, export: 64, import: 65, download: 65 }"
+        action="https://api.xydec.com.cn/crm/report_promise/import"
+        :rule="{ create: 235, export: 235, import: 235, download: 235 }"
         @add="handleAdd"
         @export="exportExcel"
         @import="importExcel"
         @download="download"
       >
         <el-form class="search-form" :model="params" ref="searchRef" label-width="0px" size="default">
-          <el-form-item label="" v-show="!showSearch && !$store.state.isMobile">
-            <el-input v-model="params.name" placeholder="输入公司名" clearable @clear="getData(1)"> </el-input>
+          <el-form-item label="" prop="report_store_id">
+            <el-select clearable filterable v-model="params.report_store_id" placeholder="选择公司" :disabled="editId != 0" @clear="getData(1)">
+              <el-option :value="item.id" :label="item.name" :disabled="item.status == 0" v-for="item in storeList" :key="item.id"></el-option>
+            </el-select>
           </el-form-item>
           <el-form-item>
             <el-button v-show="!showSearch && !$store.state.isMobile" type="primary" @click="getData(1)">搜索</el-button>
-            <el-button v-permission="66" type="primary" text @click="showSearch = !showSearch">
+            <!-- <el-button v-permission="66" type="primary" text @click="showSearch = !showSearch">
               {{ showSearch ? '收起' : '展开搜索' }}
               <el-icon>
                 <ArrowUp v-if="showSearch" />
                 <ArrowDown v-else />
               </el-icon>
-            </el-button>
+            </el-button> -->
           </el-form-item>
         </el-form>
       </ListHeader>
@@ -86,22 +64,17 @@
         v-loading="loading"
       >
         <el-table-column type="selection" prop="id" width="55" />
-        <el-table-column prop="name" label="公司名称" show-overflow-tooltip />
-        <el-table-column prop="region_name" show-overflow-tooltip label="一级区域" />
-        <el-table-column prop="province_name" show-overflow-tooltip label="省" />
-        <el-table-column prop="city_name" show-overflow-tooltip label="市" />
-        <el-table-column prop="district_name" label="区" width="140" />
-        <el-table-column prop="address" show-overflow-tooltip label="详细地址" width="180" />
-        <el-table-column prop="status" sortable label="状态">
-          <template #default="scope">
-            <el-tag size="small" type="success" v-if="scope.row.status == 1">在营</el-tag>
-            <el-tag size="small" type="danger" v-if="scope.row.status == 0">关闭</el-tag>
-          </template>
-        </el-table-column>
+        <el-table-column prop="store_name" label="公司名称" show-overflow-tooltip />
+        <el-table-column prop="min_goal" sortable label="最低签单目标" />
+        <el-table-column prop="goal" sortable label="承诺签单目标" />
+        <el-table-column prop="charge_mobile" label="负责人电话" />
+        <el-table-column prop="bdr_mobile" label="报单人电话" />
+        <el-table-column prop="bmobile" label="承诺人电话" />
+        <el-table-column prop="update_time" label="更新时间" />
         <el-table-column label="操作" fixed="right">
           <template #default="scope">
-            <el-button v-permission="63" size="small" :disabled="scope.row.id == 10001" type="primary" @click="handleEdit(scope.row)"> 编辑 </el-button>
-            <el-button v-permission="67" size="small" :disabled="scope.row.id == 10001" type="danger" @click="handleDelete(scope.row.id)"> 删除 </el-button>
+            <el-button v-permission="234" size="small" :disabled="scope.row.id == 10001" type="primary" @click="handleEdit(scope.row)"> 编辑 </el-button>
+            <el-button v-permission="233" size="small" :disabled="scope.row.id == 10001" type="danger" @click="handleDelete(scope.row.id)"> 删除 </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -127,34 +100,24 @@
         v-show="$store.state.isMobile"
       />
     </el-card>
-    <FormDialog destroyOnClose :title="'门店' + dialogTitle" ref="formDialogRef" @dialogClosed="dialogClosed" @submit="handleSubmit">
+    <FormDialog destroyOnClose :title="'签单目标' + dialogTitle" ref="formDialogRef" @dialogClosed="dialogClosed" @submit="handleSubmit">
       <el-form :model="form" ref="formRef" :rules="rules" label-width="140px" :label-position="$store.state.isMobile ? 'top' : 'right'">
-        <el-form-item label="公司名称" prop="name">
-          <el-input minlength="2" maxlength="20" show-word-limit v-model="form.name"></el-input>
-        </el-form-item>
-        <el-form-item label="所在区域" prop="region_id">
-          <el-select v-model="form.region_id" placeholder="选择区域">
-            <el-option :value="item.id" :label="item.name" v-for="item in regionList" :key="item.id"></el-option>
+        <el-form-item label="公司" prop="report_store_id">
+          <el-select clearable filterable v-model="form.report_store_id" placeholder="选择公司" :disabled="editId != 0">
+            <el-option :value="item.id" :label="item.name" :disabled="item.status == 0" v-for="item in storeList" :key="item.id"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="公司地址" prop="address">
-          <el-row :gutter="2" style="width: 100%">
-            <el-col :span="12" :offset="0">
-              <el-cascader v-model="area" :options="areaList" :props="{ value: 'id', label: 'areaname', children: 'children' }" placeholder="请选择省/市/区" @change="areaChange" />
-            </el-col>
-            <el-col :span="12" :offset="0">
-              <el-input v-model="form.address"></el-input>
-            </el-col>
-          </el-row>
+        <el-form-item label="最低签单目标" prop="min_goal">
+          <el-input type="number" v-model="form.min_goal"></el-input>
         </el-form-item>
-        <el-form-item label="排序号" prop="sort">
-          <el-input v-model="form.sort"></el-input>
+        <el-form-item label="签单目标" prop="goal">
+          <el-input type="number" v-model="form.goal"></el-input>
         </el-form-item>
-        <el-form-item label="状态" prop="status">
-          <el-radio-group v-model="form.status">
-            <el-radio :label="1">在营</el-radio>
-            <el-radio :label="0">关闭</el-radio>
-          </el-radio-group>
+        <el-form-item label="负责人电话" prop="charge_mobile">
+          <el-input v-model="form.charge_mobile"></el-input>
+        </el-form-item>
+        <el-form-item label="报单人电话" prop="bdr_mobile">
+          <el-input v-model="form.bdr_mobile"></el-input>
         </el-form-item>
       </el-form>
     </FormDialog>
@@ -164,118 +127,86 @@
 <script setup>
 import { ref, computed } from 'vue'
 import ListHeader from '@/components/ListHeader.vue'
-import store from '@/api/store'
+import report_promise from '@/api/report_promise'
 import { toast, elLoading, closeElLoading } from '@/utils/utils'
 import { useInitTable, useInitForm } from '@/hooks/useCommon'
-const { loading, count, dataList, params, getData, handleCurrentChange, handleSizeChange, sortChange, handleDelete, handleSelectionChange, multipleTableRef } = useInitTable({
-  api: store,
+const { loading, count, dataList, params, getData, handleCurrentChange, handleSizeChange, sortChange, handleSwitch, handleDelete, handleSelectionChange, multipleTableRef } = useInitTable({
+  api: report_promise,
   params: {
     page: 1,
     pageSize: 15,
-    name: '',
-    status: '',
-    region_id: '',
-    province_id: '',
-    city_id: '',
+    report_store_id: '',
   },
 })
 
 const showSearch = ref(false) // 高级搜索
 const searchMoreRef = ref()
-const { dialogTitle, formDialogRef, formRef, rules, form, handleAdd, handleEdit, handleSubmit, dialogClosed } = useInitForm({
-  api: store,
+// 签单目标验证
+const validateCheckGoal = (rule, value, callback) => {
+  if (value === '') {
+    callback(new Error('签单目标不能为空'))
+  } else {
+    if (value < form.min_goal) {
+      callback(new Error('签单目标不能小于最低签单目标'))
+    }
+    callback()
+  }
+}
+const { dialogTitle, formDialogRef, formRef, rules, form, editId, handleAdd, handleEdit, handleSubmit, dialogClosed } = useInitForm({
+  api: report_promise,
   getData,
   form: {
-    name: '',
-    region: '',
-    region_id: '',
-    province_id: '',
-    city_id: '',
-    district_id: '',
-    mobile: '',
-    address: '',
-    status: 1,
-    sort: 100,
+    report_store_id: '',
+    min_goal: '',
+    goal: '',
+    charge_mobile: '',
+    bdr_mobile: '',
   },
   rules: {
-    name: [
+    report_store_id: [
       {
         required: true,
-        message: '公司名称不能为空',
+        message: '公司不能为空',
         trigger: 'blur',
       },
     ],
-    region_id: [
+    min_goal: [
       {
         required: true,
-        message: '公司所在区域不能为空',
+        message: '最低签单目标',
         trigger: 'blur',
       },
     ],
-    province_id: [
+    goal: [
       {
         required: true,
-        message: '公司所在省不能为空',
+        validator: validateCheckGoal,
         trigger: 'blur',
       },
     ],
-    city_id: [
+    charge_mobile: [
       {
         required: true,
-        message: '公司所在市不能为空',
+        message: '负责人电话不能为空',
         trigger: 'blur',
       },
     ],
-    district_id: [
+    bdr_mobile: [
       {
         required: true,
-        message: '公司所在区不能为空',
+        message: 'bdr电话不能为空',
         trigger: 'blur',
       },
     ],
-    address: [
-      {
-        required: true,
-        message: '公司详细地址不能为空',
-        trigger: 'blur',
-      },
-    ],
-  },
-  // 编辑后继续新增，数据出现id导致无法新增
-  fliterParam(row) {
-    if (formRef.value) formRef.value.clearValidate()
-    areaList.value.forEach((item) => {
-      if (item.id == row.province_id) {
-        item.children.forEach((itm) => {
-          if (itm.id == row.city_id) {
-            areas.value = itm.children
-          }
-        })
-      }
-    })
-
-    for (const key in form) {
-      form[key] = row[key]
-    }
   },
 })
-
-// 将字符串日期转时间戳， 2020-09-12 12:11:22
-// let time = (new Date(row.create_time)).getTime()
-// 当前时间戳
-let time_current = new Date().getTime()
-// console.log(time_current)
-// const params_store = reactive({
-//   page: 1,
-//   pageSize: 10,
-// })
-// 时间戳格式化
 
 const regionList = ref([])
 const areaList = ref([])
 const province = ref([])
 const city = ref([])
 const areas = ref([])
+const storeList = ref([])
 const handleProvinceChange = (province_id) => {
   if (province_id) {
     city.value = []
@@ -293,13 +224,14 @@ const handleProvinceChange = (province_id) => {
 }
 
 // select数据,合并远程请求
-store.getSelect().then((res) => {
+report_promise.getSelect().then((res) => {
   if (res.code > 0) {
     regionList.value = res.result.region
     areaList.value = res.result.area
     res.result.area.forEach((item) => {
       province.value.push({ id: item.id, areaname: item.areaname })
     })
+    storeList.value = res.result.store
   } else {
     toast(res.message || 'Error', 'error')
   }
@@ -336,19 +268,14 @@ const resetFrom = () => {
   // searchMoreRef.value.resetFields()
   params.page = 1
   params.pageSize = 15
-  params.name = ''
-  params.status = ''
-  params.region_id = ''
-  params.province_id = ''
-  params.city_id = ''
-  city.value = []
+  params.report_store_id = ''
   getData(1)
 }
 
 // 导出
 const exportExcel = () => {
   elLoading('数据导出中...')
-  store
+  report_promise
     .export(params)
     .then((res) => {
       if (res.code > 0) {
@@ -369,7 +296,7 @@ const importExcel = (e) => {
 }
 // 下载
 const download = () => {
-  location.href = '/template_store.xlsx?v=1'
+  location.href = '/template_report_promise.xlsx?v=1'
 }
 </script>
 <style lang="scss" scoped>

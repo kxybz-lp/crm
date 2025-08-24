@@ -51,8 +51,8 @@
       </el-form>
       <ListHeader
         ref="headerRef"
-        action="https://api.xydec.com.cn/crm/store/import"
-        :rule="{ create: 62, export: 64, import: 65, download: 65 }"
+        action="https://api.xydec.com.cn/crm/report_store/import"
+        :rule="{ create: 231, export: 228, import: 229, download: 229 }"
         @add="handleAdd"
         @export="exportExcel"
         @import="importExcel"
@@ -92,16 +92,15 @@
         <el-table-column prop="city_name" show-overflow-tooltip label="市" />
         <el-table-column prop="district_name" label="区" width="140" />
         <el-table-column prop="address" show-overflow-tooltip label="详细地址" width="180" />
-        <el-table-column prop="status" sortable label="状态">
+        <el-table-column label="状态" v-permission="230">
           <template #default="scope">
-            <el-tag size="small" type="success" v-if="scope.row.status == 1">在营</el-tag>
-            <el-tag size="small" type="danger" v-if="scope.row.status == 0">关闭</el-tag>
+            <el-switch :modelValue="scope.row.status" :active-value="1" :inactive-value="0" :loading="scope.row.statusLoading" @change="handleSwitch($event, scope.row)" />
           </template>
         </el-table-column>
         <el-table-column label="操作" fixed="right">
           <template #default="scope">
-            <el-button v-permission="63" size="small" :disabled="scope.row.id == 10001" type="primary" @click="handleEdit(scope.row)"> 编辑 </el-button>
-            <el-button v-permission="67" size="small" :disabled="scope.row.id == 10001" type="danger" @click="handleDelete(scope.row.id)"> 删除 </el-button>
+            <el-button v-permission="230" size="small" :disabled="scope.row.id == 10001" type="primary" @click="handleEdit(scope.row)"> 编辑 </el-button>
+            <el-button v-permission="226" size="small" :disabled="scope.row.id == 10001" type="danger" @click="handleDelete(scope.row.id)"> 删除 </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -115,16 +114,6 @@
         @current-change="handleCurrentChange"
         @size-change="handleSizeChange"
         v-show="!$store.state.isMobile"
-      />
-      <el-pagination
-        @current-change="handleCurrentChange"
-        :current-page="params.page"
-        :page-size="params.pageSize"
-        :background="true"
-        :layout="'total, prev, next'"
-        :total="count"
-        class="fenye"
-        v-show="$store.state.isMobile"
       />
     </el-card>
     <FormDialog destroyOnClose :title="'门店' + dialogTitle" ref="formDialogRef" @dialogClosed="dialogClosed" @submit="handleSubmit">
@@ -164,11 +153,11 @@
 <script setup>
 import { ref, computed } from 'vue'
 import ListHeader from '@/components/ListHeader.vue'
-import store from '@/api/store'
+import report_store from '@/api/report_store'
 import { toast, elLoading, closeElLoading } from '@/utils/utils'
 import { useInitTable, useInitForm } from '@/hooks/useCommon'
-const { loading, count, dataList, params, getData, handleCurrentChange, handleSizeChange, sortChange, handleDelete, handleSelectionChange, multipleTableRef } = useInitTable({
-  api: store,
+const { loading, count, dataList, params, getData, handleCurrentChange, handleSizeChange, sortChange, handleSwitch, handleDelete, handleSelectionChange, multipleTableRef } = useInitTable({
+  api: report_store,
   params: {
     page: 1,
     pageSize: 15,
@@ -183,7 +172,7 @@ const { loading, count, dataList, params, getData, handleCurrentChange, handleSi
 const showSearch = ref(false) // 高级搜索
 const searchMoreRef = ref()
 const { dialogTitle, formDialogRef, formRef, rules, form, handleAdd, handleEdit, handleSubmit, dialogClosed } = useInitForm({
-  api: store,
+  api: report_store,
   getData,
   form: {
     name: '',
@@ -265,7 +254,7 @@ const { dialogTitle, formDialogRef, formRef, rules, form, handleAdd, handleEdit,
 // 当前时间戳
 let time_current = new Date().getTime()
 // console.log(time_current)
-// const params_store = reactive({
+// const params_report_store = reactive({
 //   page: 1,
 //   pageSize: 10,
 // })
@@ -293,7 +282,7 @@ const handleProvinceChange = (province_id) => {
 }
 
 // select数据,合并远程请求
-store.getSelect().then((res) => {
+report_store.getSelect().then((res) => {
   if (res.code > 0) {
     regionList.value = res.result.region
     areaList.value = res.result.area
@@ -348,7 +337,7 @@ const resetFrom = () => {
 // 导出
 const exportExcel = () => {
   elLoading('数据导出中...')
-  store
+  report_store
     .export(params)
     .then((res) => {
       if (res.code > 0) {
@@ -369,7 +358,7 @@ const importExcel = (e) => {
 }
 // 下载
 const download = () => {
-  location.href = '/template_store.xlsx?v=1'
+  location.href = '/template_report_store.xlsx?v=1'
 }
 </script>
 <style lang="scss" scoped>
