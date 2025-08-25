@@ -121,7 +121,8 @@
       <ListHeader
         ref="headerRef"
         action="https://api.xydec.com.cn/crm/report_order/import"
-        :rule="{ create: 220, export: 223, import: 222, download: 222 }"
+        :rule="{ ewm: 223, create: 220, export: 223, import: 222, download: 222 }"
+        @ewm="createEwm"
         @add="handleAdd"
         @export="exportExcel"
         @import="importExcel"
@@ -133,7 +134,7 @@
           </el-form-item>
           <el-form-item>
             <el-button v-show="!showSearch && !$store.state.isMobile" type="primary" @click="getData(1)">搜索</el-button>
-            <el-button v-permission="66" type="primary" text @click="showSearch = !showSearch">
+            <el-button v-permission="223" type="primary" text @click="showSearch = !showSearch">
               {{ showSearch ? '收起' : '展开搜索' }}
               <el-icon>
                 <ArrowUp v-if="showSearch" />
@@ -244,7 +245,7 @@ import ChooseImage from '@/components/ChooseImage.vue'
 import report_order from '@/api/report_order'
 import { toast, elLoading, closeElLoading } from '@/utils/utils'
 import { useInitTable, useInitForm } from '@/hooks/useCommon'
-const { loading, count, dataList, params, getData, handleCurrentChange, handleSizeChange, sortChange, handleSwitch, handleDelete, handleSelectionChange, multipleTableRef } = useInitTable({
+const { loading, count, dataList, params, getData, handleCurrentChange, handleSizeChange, sortChange, handleDelete, handleSelectionChange, multipleTableRef } = useInitTable({
   api: report_order,
   params: {
     page: 1,
@@ -331,26 +332,7 @@ const { dialogTitle, formDialogRef, formRef, rules, form, editId, handleAdd, han
 })
 
 const regionList = ref([])
-const areaList = ref([])
-const province = ref([])
-const city = ref([])
-const areas = ref([])
 const storeList = ref([])
-const handleProvinceChange = (province_id) => {
-  if (province_id) {
-    city.value = []
-    params.city_id = ''
-    areaList.value.forEach((item) => {
-      if (item.id == province_id) {
-        item.children.forEach((itm) => {
-          city.value.push({ id: itm.id, areaname: itm.areaname })
-        })
-      }
-    })
-  } else {
-    city.value = []
-  }
-}
 
 const imageUrl = ref('')
 const imageList = ref([])
@@ -365,40 +347,11 @@ const showImage = (image) => {
 report_order.getSelect().then((res) => {
   if (res.code > 0) {
     regionList.value = res.result.region
-    areaList.value = res.result.area
-    res.result.area.forEach((item) => {
-      province.value.push({ id: item.id, areaname: item.areaname })
-    })
     storeList.value = res.result.store
   } else {
     toast(res.message || 'Error', 'error')
   }
 })
-
-// const area = ref([])
-const area = computed({
-  get() {
-    return form.province_id && form.city_id && form.district_id ? [form.province_id, form.city_id, form.district_id] : []
-  },
-  set(val) {
-    form.province_id = val[0]
-    form.city_id = val[1]
-    form.district_id = val[2]
-  },
-})
-const areaChange = (val) => {
-  areas.value = []
-  form.service_areas = []
-  areaList.value.forEach((item) => {
-    if (item.id == val[0]) {
-      item.children.forEach((itm) => {
-        if (itm.id == val[1]) {
-          areas.value = itm.children
-        }
-      })
-    }
-  })
-}
 
 // 表单重置
 const resetFrom = () => {
@@ -416,6 +369,26 @@ const resetFrom = () => {
   params.sign_time_start = ''
   params.sign_time_end = ''
   getData(1)
+}
+
+// 生成二维码
+const createEwm = () => {
+  loading.value = true
+  report_order
+    .ewm()
+    .then((res) => {
+      if (res.code > 0) {
+        toast('二维码生成成功')
+        imageUrl.value = res.result.path
+        imageList.value = [res.result.path]
+        showPreview.value = true
+      } else {
+        toast(res.message, 'error')
+      }
+    })
+    .finally(() => {
+      loading.value = false
+    })
 }
 
 // 导出

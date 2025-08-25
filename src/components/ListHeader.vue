@@ -1,6 +1,7 @@
 <template>
   <el-row :gutter="0" class="list-header">
     <el-col :span="10" :offset="0">
+      <el-button v-if="rule.ewm && !$store.state.isMobile" v-permission="rule.ewm" type="primary" color="#18bc9c" style="color: #fff" size="default" @click="$emit('ewm')">生成二维码</el-button>
       <el-button v-if="rule.create && rule.create === 157" v-permission="rule.create" type="primary" size="default" @click="$router.push('/goods/add')">新增</el-button>
       <!-- <el-button v-if="rule.create && rule.create === 79" v-permission="rule.create" type="primary"
         size="default" @click="$router.push('/order/add')">新增</el-button> -->
@@ -46,7 +47,7 @@ const props = defineProps({
   },
 })
 // const btns = computed(() => props.layout.split(','))
-defineEmits(['add', 'sort', 'move', 'delete', 'export', 'import', 'download'])
+defineEmits(['add', 'sort', 'move', 'delete', 'export', 'import', 'download', 'ewm'])
 </script>
 <style lang="scss" scoped>
 .list-header {

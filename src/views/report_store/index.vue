@@ -64,7 +64,7 @@
           </el-form-item>
           <el-form-item>
             <el-button v-show="!showSearch && !$store.state.isMobile" type="primary" @click="getData(1)">搜索</el-button>
-            <el-button v-permission="66" type="primary" text @click="showSearch = !showSearch">
+            <el-button v-permission="231" type="primary" text @click="showSearch = !showSearch">
               {{ showSearch ? '收起' : '展开搜索' }}
               <el-icon>
                 <ArrowUp v-if="showSearch" />

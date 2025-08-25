@@ -28,7 +28,7 @@ const card = {
   sort(params) {
     return post('/crm/card/sort', params)
   },
-    // 生成二维码
+  // 生成二维码
   ewm(params) {
     return post('/crm/card/create_ewm', params)
   },

@@ -15,6 +15,10 @@ const report_order = {
   getSelect() {
     return get('/crm/report_order/getSelectData')
   },
+  // 生成二维码
+  ewm(params) {
+    return post('/crm/report_order/create_ewm', params)
+  },
   // 新增
   create(params) {
     return post('/crm/report_order/create', params)

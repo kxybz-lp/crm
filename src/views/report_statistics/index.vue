@@ -81,7 +81,7 @@
       </el-form>
       <el-row :gutter="20" v-if="dataList.length > 0">
         <el-col :span="24" :offset="0" style="text-align: right; margin-bottom: 15px">
-          <el-button v-permission="120" type="danger" @click="handExport" :loading="loading">导出</el-button>
+          <el-button v-permission="237" type="danger" @click="handExport" :loading="loading">导出</el-button>
         </el-col>
       </el-row>
       <div class="tableData" style="padding-bottom: 15px" v-loading="loading" element-loading-text="数据加载中......">
