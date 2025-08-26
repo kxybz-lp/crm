@@ -164,7 +164,7 @@
         <!-- <el-table-column prop="customer_name" label="客户名称" show-overflow-tooltip /> -->
         <!-- <el-table-column prop="mobile" label="客户电话" /> -->
         <el-table-column prop="order_no" label="订单编号" show-overflow-tooltip />
-        <!-- <el-table-column prop="project_name" label="项目名称" show-overflow-tooltip /> -->
+        <el-table-column prop="project_name" label="项目名称" show-overflow-tooltip />
         <el-table-column prop="store_name" label="签单公司" show-overflow-tooltip />
         <el-table-column prop="sign_time" sortable label="签单时间" />
         <el-table-column label="签单金额">

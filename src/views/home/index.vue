@@ -126,7 +126,9 @@
             <el-table-column prop="region_name" label="区域名称" min-width="90" />
             <el-table-column prop="goal" label="目标数" />
             <el-table-column prop="order_count" label="订单数" />
-            <el-table-column prop="per" label="完成率" />
+            <el-table-column label="完成率">
+              <template #default="scope"> {{ scope.row.per }}% </template>
+            </el-table-column>
           </el-table>
         </el-card>
       </el-col>
@@ -141,7 +143,9 @@
             <el-table-column prop="store_name" label="公司名称" min-width="90" />
             <el-table-column prop="goal" label="目标数" />
             <el-table-column prop="order_count" label="订单数" />
-            <el-table-column prop="per" label="完成率" />
+            <el-table-column label="完成率">
+              <template #default="scope"> {{ scope.row.per }}% </template>
+            </el-table-column>
           </el-table>
         </el-card>
       </el-col>
