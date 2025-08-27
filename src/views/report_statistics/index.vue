@@ -179,8 +179,6 @@ const setScope = (val) => {
       break
     case 'today':
       params.create_time = [currentDay, currentDay]
-      console.log(params.create_time)
-
       break
     case 'yestoday':
       params.create_time = [lastDay, lastDay]
@@ -242,7 +240,6 @@ const switchTime = (val) => {
 // 合计
 const getSummaries = (param) => {
   const { columns, data } = param
-  console.log(columns)
   const sums = []
   const summaryData = {
     goal: 0,

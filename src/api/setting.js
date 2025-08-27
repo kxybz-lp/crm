@@ -1,5 +1,5 @@
 /**
- * coupon系统设置接口列表
+ * setting系统设置接口列表
  */
 import { get, post } from '@/utils/http'
 

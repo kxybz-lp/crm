@@ -73,8 +73,8 @@
         <el-table-column prop="update_time" label="更新时间" />
         <el-table-column label="操作" fixed="right">
           <template #default="scope">
-            <el-button v-permission="234" size="small" :disabled="scope.row.id == 10001" type="primary" @click="handleEdit(scope.row)"> 编辑 </el-button>
-            <el-button v-permission="233" size="small" :disabled="scope.row.id == 10001" type="danger" @click="handleDelete(scope.row.id)"> 删除 </el-button>
+            <el-button v-permission="234" size="small" type="primary" @click="handleEdit(scope.row)"> 编辑 </el-button>
+            <el-button v-permission="233" size="small" type="danger" @click="handleDelete(scope.row.id)"> 删除 </el-button>
           </template>
         </el-table-column>
       </el-table>

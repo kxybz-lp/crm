@@ -135,7 +135,7 @@
       >
         <el-form class="search-form" :model="params" ref="searchRef" label-width="0px" size="default">
           <el-form-item label="" prop="report_store_id">
-            <el-input v-model="params.mobile" placeholder="输入客户电话" clearable @clear="getData"> </el-input>
+            <el-input v-model="params.order_no" placeholder="输入订单编号" clearable @clear="getData"> </el-input>
           </el-form-item>
           <el-form-item>
             <el-button v-show="!showSearch && !$store.state.isMobile" type="primary" @click="getData(1)">搜索</el-button>
@@ -181,8 +181,8 @@
         <!-- <el-table-column prop="user_id" label="报单人" /> -->
         <el-table-column label="操作" fixed="right">
           <template #default="scope">
-            <el-button v-permission="221" size="small" :disabled="scope.row.id == 10001" type="primary" @click="handleEdit(scope.row)"> 编辑 </el-button>
-            <el-button v-permission="225" size="small" :disabled="scope.row.id == 10001" type="danger" @click="handleDelete(scope.row.id)"> 删除 </el-button>
+            <el-button v-permission="221" size="small" type="primary" @click="handleEdit(scope.row)"> 编辑 </el-button>
+            <el-button v-permission="225" size="small" type="danger" @click="handleDelete(scope.row.id)"> 删除 </el-button>
           </template>
         </el-table-column>
       </el-table>

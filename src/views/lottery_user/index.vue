@@ -3,32 +3,32 @@
     <el-card class="admin-card" shadow="hover">
       <el-form class="search-more" :model="params" ref="searchMoreRef" size="default" label-width="68px" v-if="showSearch" :label-position="$store.state.isMobile ? 'top' : 'left'">
         <el-row :gutter="20">
-          <!-- <el-col :md="6" :offset="0">
-            <el-form-item label="客户电话">
-              <el-input v-model="params.mobile" placeholder="输入客户电话" clearable @clear="getData"> </el-input>
-            </el-form-item>
-          </el-col> -->
           <el-col :md="6" :offset="0">
-            <el-form-item label="订单标号">
-              <el-input v-model="params.order_no" placeholder="输入订单标号" clearable @clear="getData"> </el-input>
+            <el-form-item label="客户姓名">
+              <el-input v-model="params.name" placeholder="输入客户姓名" clearable @clear="getData"> </el-input>
             </el-form-item>
           </el-col>
           <el-col :md="6" :offset="0">
+            <el-form-item label="客户电话">
+              <el-input v-model="params.mobile" placeholder="输入客户电话" clearable @clear="getData"> </el-input>
+            </el-form-item>
+          </el-col>
+          <!-- <el-col :md="6" :offset="0">
             <el-form-item label="区域">
               <el-select v-model="params.region_id" placeholder="选择区域" clearable @clear="getData(1)">
                 <el-option :value="item.id" :label="item.name" v-for="item in regionList" :key="item.id"></el-option>
               </el-select>
             </el-form-item>
-          </el-col>
+          </el-col> -->
           <el-col :md="6" :offset="0">
             <el-form-item label="公司">
-              <el-select clearable filterable v-model="params.report_store_id" placeholder="选择公司" @clear="getData(1)">
+              <el-select clearable filterable v-model="params.store_id" placeholder="选择公司" @clear="getData(1)">
                 <el-option :value="item.id" :label="item.name" :disabled="item.status == 0" v-for="item in storeList" :key="item.id"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :md="6" :offset="0">
-            <el-form-item label="报单时间">
+            <el-form-item label="添加时间">
               <template v-if="!$store.state.isMobile">
                 <el-date-picker
                   style="width: 45%"
@@ -39,8 +39,8 @@
                   range-separator="至"
                   clearable
                   @clear="getData(1)"
-                  start-placeholder="报单开始时间"
-                  end-placeholder="报单结束时间"
+                  start-placeholder="开始时间"
+                  end-placeholder="结束时间"
                 />
               </template>
               <template v-else>
@@ -48,7 +48,7 @@
                   style="width: 100%; margin-bottom: 10px"
                   v-model="params.create_time_start"
                   type="datetime"
-                  placeholder="报单开始时间"
+                  placeholder="开始时间"
                   format="YYYY-MM-DD HH:mm:ss"
                   value-format="YYYY-MM-DD HH:mm:ss"
                   :editable="false"
@@ -59,7 +59,7 @@
                   style="width: 100%"
                   v-model="params.create_time_end"
                   type="datetime"
-                  placeholder="报单结束时间"
+                  placeholder="结束时间"
                   format="YYYY-MM-DD HH:mm:ss"
                   value-format="YYYY-MM-DD HH:mm:ss"
                   :editable="false"
@@ -113,6 +113,14 @@
               </template>
             </el-form-item>
           </el-col>
+          <el-col :md="6" :offset="0">
+            <el-form-item label="状态">
+              <el-select v-model="params.status" placeholder="选择状态" clearable @clear="getData(1)">
+                <el-option value="1" label="显示"></el-option>
+                <el-option value="0" label="隐藏"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
         </el-row>
         <el-row :gutter="2">
           <el-col :span="24" :offset="0">
@@ -125,7 +133,7 @@
       </el-form>
       <ListHeader
         ref="headerRef"
-        action="https://api.xydec.com.cn/crm/report_order/import"
+        action="https://api.xydec.com.cn/crm/lottery_user/import"
         :rule="{ ewm: 223, create: 220, export: 223, import: 222, download: 222 }"
         @ewm="createEwm"
         @add="handleAdd"
@@ -134,7 +142,7 @@
         @download="download"
       >
         <el-form class="search-form" :model="params" ref="searchRef" label-width="0px" size="default">
-          <el-form-item label="" prop="report_store_id">
+          <el-form-item label="" prop="store_id">
             <el-input v-model="params.mobile" placeholder="输入客户电话" clearable @clear="getData"> </el-input>
           </el-form-item>
           <el-form-item>
@@ -161,28 +169,26 @@
         v-loading="loading"
       >
         <el-table-column type="selection" prop="id" width="55" />
-        <!-- <el-table-column prop="customer_name" label="客户名称" show-overflow-tooltip /> -->
-        <!-- <el-table-column prop="mobile" label="客户电话" /> -->
-        <el-table-column prop="order_no" label="订单编号" show-overflow-tooltip />
-        <el-table-column prop="project_name" label="项目名称" show-overflow-tooltip />
-        <el-table-column prop="store_name" label="签单公司" show-overflow-tooltip />
+        <el-table-column prop="name" label="客户名称" show-overflow-tooltip />
+        <el-table-column prop="mobile" label="客户电话" />
         <el-table-column prop="sign_time" sortable label="签单时间" />
-        <el-table-column label="签单金额">
-          <template #default="scope">
-            <p>{{ scope.row.sign_amount ? scope.row.sign_amount : '' }}</p>
-          </template>
-        </el-table-column>
+        <!-- <el-table-column prop="order_no" label="订单编号" show-overflow-tooltip /> -->
+        <el-table-column prop="store_name" label="签单公司" show-overflow-tooltip />
         <el-table-column label="签单收据">
           <template #default="scope">
             <el-image style="width: 50px; height: 50px" :src="scope.row.receipt" fit="cover" @click="showImage(scope.row.receipt)" />
           </template>
         </el-table-column>
-        <el-table-column prop="create_time" sortable label="报单时间" />
-        <!-- <el-table-column prop="user_id" label="报单人" /> -->
+        <el-table-column label="状态" v-permission="230">
+          <template #default="scope">
+            <el-switch :modelValue="scope.row.status" :active-value="1" :inactive-value="0" :loading="scope.row.statusLoading" @change="handleSwitch($event, scope.row)" />
+          </template>
+        </el-table-column>
+        <el-table-column prop="create_time" sortable label="添加时间" />
         <el-table-column label="操作" fixed="right">
           <template #default="scope">
-            <el-button v-permission="221" size="small" :disabled="scope.row.id == 10001" type="primary" @click="handleEdit(scope.row)"> 编辑 </el-button>
-            <el-button v-permission="225" size="small" :disabled="scope.row.id == 10001" type="danger" @click="handleDelete(scope.row.id)"> 删除 </el-button>
+            <el-button v-permission="221" size="small" type="primary" @click="handleEdit(scope.row)"> 编辑 </el-button>
+            <el-button v-permission="225" size="small" type="danger" @click="handleDelete(scope.row.id)"> 删除 </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -200,20 +206,17 @@
     </el-card>
     <FormDialog destroyOnClose :title="'订单' + dialogTitle" ref="formDialogRef" @dialogClosed="dialogClosed" @submit="handleSubmit">
       <el-form :model="form" ref="formRef" :rules="rules" label-width="140px" :label-position="$store.state.isMobile ? 'top' : 'right'">
-        <!-- <el-form-item label="客户名称">
-          <el-input v-model="form.customer_name"></el-input>
+        <el-form-item label="客户名称" prop="name">
+          <el-input v-model="form.name"></el-input>
         </el-form-item>
         <el-form-item label="客户电话" prop="mobile">
           <el-input v-model="form.mobile"></el-input>
-        </el-form-item> -->
-        <el-form-item label="签单公司" prop="report_store_id">
-          <el-select clearable filterable v-model="form.report_store_id" placeholder="选择公司">
+        </el-form-item>
+        <el-form-item label="签单公司" prop="store_id">
+          <el-select clearable filterable v-model="form.store_id" placeholder="选择公司">
             <el-option :value="item.id" :label="item.name" :disabled="item.status == 0" v-for="item in storeList" :key="item.id"></el-option>
           </el-select>
         </el-form-item>
-        <!-- <el-form-item label="项目名称">
-          <el-input v-model="form.project_name"></el-input>
-        </el-form-item> -->
         <el-form-item label="签单时间" prop="sign_time">
           <el-date-picker
             style="width: 100%"
@@ -245,20 +248,20 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import ListHeader from '@/components/ListHeader.vue'
 import ChooseImage from '@/components/ChooseImage.vue'
-import report_order from '@/api/report_order'
+import lottery_user from '@/api/lottery_user'
 import { toast, elLoading, closeElLoading } from '@/utils/utils'
 import { useInitTable, useInitForm } from '@/hooks/useCommon'
-const { loading, count, dataList, params, getData, handleCurrentChange, handleSizeChange, sortChange, handleDelete, handleSelectionChange, multipleTableRef } = useInitTable({
-  api: report_order,
+const { loading, count, dataList, params, getData, handleCurrentChange, handleSizeChange, sortChange, handleSwitch, handleDelete, handleSelectionChange, multipleTableRef } = useInitTable({
+  api: lottery_user,
   params: {
     page: 1,
     pageSize: 15,
-    report_store_id: '',
+    store_id: '',
     mobile: '',
-    order_no: '',
+    name: '',
     region_id: '',
     sign_time: '',
     sign_time_start: '',
@@ -273,12 +276,11 @@ const { loading, count, dataList, params, getData, handleCurrentChange, handleSi
 const showSearch = ref(false) // 高级搜索
 const searchMoreRef = ref()
 const { dialogTitle, formDialogRef, formRef, rules, form, editId, handleAdd, handleEdit, handleSubmit, dialogClosed } = useInitForm({
-  api: report_order,
+  api: lottery_user,
   getData,
   form: {
-    report_store_id: '',
-    customer_name: '',
-    project_name: '',
+    store_id: '',
+    name: '',
     mobile: '',
     status: 1,
     sign_amount: '',
@@ -286,27 +288,20 @@ const { dialogTitle, formDialogRef, formRef, rules, form, editId, handleAdd, han
     receipt: '',
   },
   rules: {
-    report_store_id: [
+    store_id: [
       {
         required: true,
         message: '签单公司不能为空',
         trigger: 'blur',
       },
     ],
-    // customer_name: [
-    //   {
-    //     required: true,
-    //     message: '客户名称不能为空',
-    //     trigger: 'blur',
-    //   },
-    // ],
-    // project_name: [
-    //   {
-    //     required: true,
-    //     message: '项目名称不能为空',
-    //     trigger: 'blur',
-    //   },
-    // ],
+    name: [
+      {
+        required: true,
+        message: '客户名称不能为空',
+        trigger: 'blur',
+      },
+    ],
     mobile: [
       {
         required: true,
@@ -351,7 +346,7 @@ const showImage = (image) => {
 }
 
 // select数据,合并远程请求
-report_order.getSelect().then((res) => {
+lottery_user.getSelect().then((res) => {
   if (res.code > 0) {
     regionList.value = res.result.region
     storeList.value = res.result.store
@@ -366,7 +361,8 @@ const resetFrom = () => {
   // searchMoreRef.value.resetFields()
   params.page = 1
   params.pageSize = 15
-  params.report_store_id = ''
+  params.store_id = ''
+  params.name = ''
   params.mobile = ''
   params.region_id = ''
   params.create_time = ''
@@ -381,7 +377,7 @@ const resetFrom = () => {
 // 生成二维码
 const createEwm = () => {
   loading.value = true
-  report_order
+  lottery_user
     .ewm()
     .then((res) => {
       if (res.code > 0) {
@@ -401,7 +397,7 @@ const createEwm = () => {
 // 导出
 const exportExcel = () => {
   elLoading('数据导出中...')
-  report_order
+  lottery_user
     .export(params)
     .then((res) => {
       if (res.code > 0) {
@@ -422,7 +418,7 @@ const importExcel = (e) => {
 }
 // 下载
 const download = () => {
-  location.href = '/template_report_order.xlsx?v=1'
+  location.href = '/template_lottery_user.xlsx?v=1'
 }
 </script>
 <style lang="scss" scoped>

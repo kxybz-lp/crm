@@ -1,5 +1,5 @@
 /**
- * branch模块接口列表
+ * store模块接口列表
  */
 import { get, post } from '@/utils/http'
 
