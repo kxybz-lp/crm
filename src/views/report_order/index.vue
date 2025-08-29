@@ -72,29 +72,29 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :md="6" :offset="0">
-            <el-form-item label="签单时间">
+            <el-form-item label="签单日期">
               <template v-if="!$store.state.isMobile">
                 <el-date-picker
                   style="width: 45%"
                   v-model="params.sign_time"
-                  value-format="YYYY-MM-DD HH:mm:ss"
+                  value-format="YYYY-MM-DD"
                   :editable="false"
-                  type="datetimerange"
+                  type="daterange"
                   range-separator="至"
                   clearable
                   @clear="getData(1)"
-                  start-placeholder="签单开始时间"
-                  end-placeholder="签单结束时间"
+                  start-placeholder="签单开始日期"
+                  end-placeholder="签单结束日期"
                 />
               </template>
               <template v-else>
                 <el-date-picker
                   style="width: 100%; margin-bottom: 10px"
                   v-model="params.sign_time_start"
-                  type="datetime"
-                  placeholder="签单开始时间"
-                  format="YYYY-MM-DD HH:mm:ss"
-                  value-format="YYYY-MM-DD HH:mm:ss"
+                  type="date"
+                  placeholder="签单开始日期"
+                  format="YYYY-MM-DD"
+                  value-format="YYYY-MM-DD"
                   :editable="false"
                   clearable
                   @clear="getData(1)"
@@ -102,10 +102,10 @@
                 <el-date-picker
                   style="width: 100%"
                   v-model="params.sign_time_end"
-                  type="datetime"
-                  placeholder="签单结束时间"
-                  format="YYYY-MM-DD HH:mm:ss"
-                  value-format="YYYY-MM-DD HH:mm:ss"
+                  type="date"
+                  placeholder="签单结束日期"
+                  format="YYYY-MM-DD"
+                  value-format="YYYY-MM-DD"
                   :editable="false"
                   clearable
                   @clear="getData(1)"
@@ -166,8 +166,8 @@
         <el-table-column prop="order_no" label="订单编号" show-overflow-tooltip />
         <!-- <el-table-column prop="project_name" label="项目名称" show-overflow-tooltip /> -->
         <el-table-column prop="store_name" label="签单公司" show-overflow-tooltip />
-        <el-table-column prop="sign_time" sortable label="签单时间" />
-        <el-table-column label="签单金额">
+        <el-table-column prop="sign_time" sortable label="签单日期" />
+        <el-table-column label="定金金额">
           <template #default="scope">
             <p>{{ scope.row.sign_amount ? scope.row.sign_amount : '' }}</p>
           </template>
@@ -214,19 +214,10 @@
         <!-- <el-form-item label="项目名称">
           <el-input v-model="form.project_name"></el-input>
         </el-form-item> -->
-        <el-form-item label="签单时间" prop="sign_time">
-          <el-date-picker
-            style="width: 100%"
-            v-model="form.sign_time"
-            type="datetime"
-            placeholder="请选择签单时间"
-            format="YYYY-MM-DD HH:mm:ss"
-            value-format="YYYY-MM-DD HH:mm:ss"
-            :editable="false"
-            clearable
-          />
+        <el-form-item label="签单日期" prop="sign_time">
+          <el-date-picker style="width: 100%" v-model="form.sign_time" type="datetime" placeholder="请选择签单日期" format="YYYY-MM-DD" value-format="YYYY-MM-DD" :editable="false" clearable />
         </el-form-item>
-        <el-form-item label="签单金额">
+        <el-form-item label="定金金额">
           <el-input type="number" v-model="form.sign_amount"></el-input>
         </el-form-item>
         <el-form-item label="签单收据" prop="receipt">
@@ -324,7 +315,7 @@ const { dialogTitle, formDialogRef, formRef, rules, form, editId, handleAdd, han
     // sign_amount: [
     //   {
     //     required: true,
-    //     message: '签单金额不能为空',
+    //     message: '定金金额不能为空',
     //     trigger: 'blur',
     //   },
     // ],

@@ -36,7 +36,7 @@
       >
         <el-form class="search-form" :model="params" ref="searchRef" label-width="0px" size="default">
           <el-form-item label="" prop="report_store_id">
-            <el-select clearable filterable v-model="params.report_store_id" placeholder="选择公司" :disabled="editId != 0" @clear="getData(1)">
+            <el-select clearable filterable v-model="params.report_store_id" placeholder="选择公司" @clear="getData(1)">
               <el-option :value="item.id" :label="item.name" :disabled="item.status == 0" v-for="item in storeList" :key="item.id"></el-option>
             </el-select>
           </el-form-item>
@@ -65,11 +65,10 @@
       >
         <el-table-column type="selection" prop="id" width="55" />
         <el-table-column prop="store_name" label="公司名称" show-overflow-tooltip />
-        <el-table-column prop="min_goal" sortable label="最低签单目标" />
-        <el-table-column prop="goal" sortable label="承诺签单目标" />
+        <el-table-column prop="goal" sortable label="签单目标" />
         <el-table-column prop="charge_mobile" label="负责人电话" />
         <el-table-column prop="bdr_mobile" label="报单人电话" />
-        <el-table-column prop="bmobile" label="承诺人电话" />
+        <!-- <el-table-column prop="bmobile" label="承诺人电话" /> -->
         <el-table-column prop="update_time" label="更新时间" />
         <el-table-column label="操作" fixed="right">
           <template #default="scope">
@@ -107,13 +106,10 @@
             <el-option :value="item.id" :label="item.name" :disabled="item.status == 0" v-for="item in storeList" :key="item.id"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="最低签单目标" prop="min_goal">
-          <el-input type="number" v-model="form.min_goal"></el-input>
-        </el-form-item>
         <el-form-item label="签单目标" prop="goal">
           <el-input type="number" v-model="form.goal"></el-input>
         </el-form-item>
-        <el-form-item label="负责人电话" prop="charge_mobile">
+        <el-form-item label="负责人电话">
           <el-input v-model="form.charge_mobile"></el-input>
         </el-form-item>
         <el-form-item label="报单人电话" prop="bdr_mobile">
@@ -142,22 +138,21 @@ const { loading, count, dataList, params, getData, handleCurrentChange, handleSi
 const showSearch = ref(false) // 高级搜索
 const searchMoreRef = ref()
 // 签单目标验证
-const validateCheckGoal = (rule, value, callback) => {
-  if (value === '') {
-    callback(new Error('签单目标不能为空'))
-  } else {
-    if (value < form.min_goal) {
-      callback(new Error('签单目标不能小于最低签单目标'))
-    }
-    callback()
-  }
-}
+// const validateCheckGoal = (rule, value, callback) => {
+//   if (value === '') {
+//     callback(new Error('签单目标不能为空'))
+//   } else {
+//     if (value < form.min_goal) {
+//       callback(new Error('签单目标不能小于最低签单目标'))
+//     }
+//     callback()
+//   }
+// }
 const { dialogTitle, formDialogRef, formRef, rules, form, editId, handleAdd, handleEdit, handleSubmit, dialogClosed } = useInitForm({
   api: report_promise,
   getData,
   form: {
     report_store_id: '',
-    min_goal: '',
     goal: '',
     charge_mobile: '',
     bdr_mobile: '',
@@ -170,24 +165,10 @@ const { dialogTitle, formDialogRef, formRef, rules, form, editId, handleAdd, han
         trigger: 'blur',
       },
     ],
-    min_goal: [
-      {
-        required: true,
-        message: '最低签单目标',
-        trigger: 'blur',
-      },
-    ],
     goal: [
       {
         required: true,
-        validator: validateCheckGoal,
-        trigger: 'blur',
-      },
-    ],
-    charge_mobile: [
-      {
-        required: true,
-        message: '负责人电话不能为空',
+        message: '签单目标不能为空',
         trigger: 'blur',
       },
     ],
