@@ -110,8 +110,8 @@
           <el-table-column prop="per" label="总目标完成率" sortable min-width="100" v-if="params.type === 'report'">
             <template #default="scope"> {{ scope.row.per }}% </template>
           </el-table-column>
-          <el-table-column prop="order_count_state" label="一阶段签单数" sortable min-width="100" v-if="params.type === 'report'" />
-          <el-table-column prop="per_state" label="一阶段完成率" sortable min-width="100" v-if="params.type === 'report'">
+          <el-table-column prop="order_count_state" label="二阶段签单数" sortable min-width="100" v-if="params.type === 'report'" />
+          <el-table-column prop="per_state" label="二阶段完成率" sortable min-width="100" v-if="params.type === 'report'">
             <template #default="scope"> {{ scope.row.per_state }}% </template>
           </el-table-column>
           <el-table-column prop="goal" label="活动总目标" sortable min-width="100" v-if="params.type === 'report'" />

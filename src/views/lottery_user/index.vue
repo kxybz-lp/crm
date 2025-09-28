@@ -70,7 +70,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="20">
+        <!-- <el-row :gutter="20">
           <el-col :md="6" :offset="0">
             <el-form-item label="签单时间">
               <template v-if="!$store.state.isMobile">
@@ -121,7 +121,7 @@
               </el-select>
             </el-form-item>
           </el-col>
-        </el-row>
+        </el-row> -->
         <el-row :gutter="2">
           <el-col :span="24" :offset="0">
             <el-form-item label="">
@@ -134,7 +134,7 @@
       <ListHeader
         ref="headerRef"
         action="https://api.xydec.com.cn/crm/lottery_user/import"
-        :rule="{ ewm: 223, create: 220, export: 223, import: 222, download: 222 }"
+        :rule="{ ewm: 255, create: 255, export: 252, import: 253, download: 253 }"
         @ewm="createEwm"
         @add="handleAdd"
         @export="exportExcel"
@@ -147,7 +147,7 @@
           </el-form-item>
           <el-form-item>
             <el-button v-show="!showSearch && !$store.state.isMobile" type="primary" @click="getData(1)">搜索</el-button>
-            <el-button v-permission="223" type="primary" text @click="showSearch = !showSearch">
+            <el-button v-permission="256" type="primary" text @click="showSearch = !showSearch">
               {{ showSearch ? '收起' : '展开搜索' }}
               <el-icon>
                 <ArrowUp v-if="showSearch" />
@@ -171,15 +171,15 @@
         <el-table-column type="selection" prop="id" width="55" />
         <el-table-column prop="name" label="客户名称" show-overflow-tooltip />
         <el-table-column prop="mobile" label="客户电话" />
-        <el-table-column prop="sign_time" sortable label="签单时间" />
+        <!-- <el-table-column prop="sign_time" sortable label="签单时间" /> -->
         <!-- <el-table-column prop="order_no" label="订单编号" show-overflow-tooltip /> -->
         <el-table-column prop="store_name" label="签单公司" show-overflow-tooltip />
-        <el-table-column label="签单收据">
+        <!-- <el-table-column label="签单收据">
           <template #default="scope">
             <el-image style="width: 50px; height: 50px" :src="scope.row.receipt" fit="cover" @click="showImage(scope.row.receipt)" />
           </template>
-        </el-table-column>
-        <el-table-column label="状态" v-permission="230">
+        </el-table-column> -->
+        <el-table-column label="状态" v-permission="254">
           <template #default="scope">
             <el-switch :modelValue="scope.row.status" :active-value="1" :inactive-value="0" :loading="scope.row.statusLoading" @change="handleSwitch($event, scope.row)" />
           </template>
@@ -187,8 +187,8 @@
         <el-table-column prop="create_time" sortable label="添加时间" />
         <el-table-column label="操作" fixed="right">
           <template #default="scope">
-            <el-button v-permission="221" size="small" type="primary" @click="handleEdit(scope.row)"> 编辑 </el-button>
-            <el-button v-permission="225" size="small" type="danger" @click="handleDelete(scope.row.id)"> 删除 </el-button>
+            <el-button v-permission="254" size="small" type="primary" @click="handleEdit(scope.row)"> 编辑 </el-button>
+            <el-button v-permission="250" size="small" type="danger" @click="handleDelete(scope.row.id)"> 删除 </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -217,7 +217,7 @@
             <el-option :value="item.id" :label="item.name" :disabled="item.status == 0" v-for="item in storeList" :key="item.id"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="签单时间" prop="sign_time">
+        <!-- <el-form-item label="签单时间" prop="sign_time">
           <el-date-picker
             style="width: 100%"
             v-model="form.sign_time"
@@ -234,7 +234,7 @@
         </el-form-item>
         <el-form-item label="签单收据" prop="receipt">
           <ChooseImage v-model="form.receipt" />
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="状态">
           <el-switch v-model="form.status" :active-value="1" :inactive-value="0" />
         </el-form-item>
@@ -250,7 +250,6 @@
 <script setup>
 import { ref } from 'vue'
 import ListHeader from '@/components/ListHeader.vue'
-import ChooseImage from '@/components/ChooseImage.vue'
 import lottery_user from '@/api/lottery_user'
 import { toast, elLoading, closeElLoading } from '@/utils/utils'
 import { useInitTable, useInitForm } from '@/hooks/useCommon'

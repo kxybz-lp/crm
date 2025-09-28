@@ -3,14 +3,9 @@
     <el-card class="admin-card" shadow="hover">
       <el-form class="search-more" :model="params" ref="searchMoreRef" size="default" label-width="68px" v-if="showSearch" :label-position="$store.state.isMobile ? 'top' : 'left'">
         <el-row :gutter="20">
-          <!-- <el-col :md="6" :offset="0">
+          <el-col :md="6" :offset="0">
             <el-form-item label="客户电话">
               <el-input v-model="params.mobile" placeholder="输入客户电话" clearable @clear="getData"> </el-input>
-            </el-form-item>
-          </el-col> -->
-          <el-col :md="6" :offset="0">
-            <el-form-item label="订单标号">
-              <el-input v-model="params.order_no" placeholder="输入订单标号" clearable @clear="getData"> </el-input>
             </el-form-item>
           </el-col>
           <!-- <el-col :md="6" :offset="0">
@@ -20,6 +15,13 @@
               </el-select>
             </el-form-item>
           </el-col> -->
+          <el-col :md="6" :offset="0">
+            <el-form-item label="奖项">
+              <el-select clearable filterable v-model="params.lottery_award_id" placeholder="选择奖项" @clear="getData(1)">
+                <el-option :value="item.id" :label="item.name" v-for="item in awardList" :key="item.id"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
           <el-col :md="6" :offset="0">
             <el-form-item label="公司">
               <el-select clearable filterable v-model="params.store_id" placeholder="选择公司" @clear="getData(1)">
@@ -79,14 +81,14 @@
           </el-col>
         </el-row>
       </el-form>
-      <ListHeader ref="headerRef" :rule="{ ewm: 261, export: 263 }" @ewm="createEwm" @export="exportExcel">
+      <ListHeader ref="headerRef" :rule="{ export: 263 }" @ewm="createEwm" @export="exportExcel">
         <el-form class="search-form" :model="params" ref="searchRef" label-width="0px" size="default">
-          <el-form-item label="" prop="order_no">
-            <el-input v-model="params.order_no" placeholder="输入订单编号" clearable @clear="getData"> </el-input>
+          <el-form-item label="" prop="mobile">
+            <el-input v-model="params.mobile" placeholder="输入客户手机号" clearable @clear="getData"> </el-input>
           </el-form-item>
           <el-form-item>
             <el-button v-show="!showSearch && !$store.state.isMobile" type="primary" @click="getData(1)">搜索</el-button>
-            <el-button v-permission="223" type="primary" text @click="showSearch = !showSearch">
+            <el-button v-permission="261" type="primary" text @click="showSearch = !showSearch">
               {{ showSearch ? '收起' : '展开搜索' }}
               <el-icon>
                 <ArrowUp v-if="showSearch" />
@@ -108,11 +110,10 @@
         v-loading="loading"
       >
         <el-table-column type="selection" prop="id" width="55" />
-        <!-- <el-table-column prop="customer_name" label="客户名称" show-overflow-tooltip /> -->
-        <!-- <el-table-column prop="mobile" label="客户电话" /> -->
-        <el-table-column prop="order_no" label="订单编号" show-overflow-tooltip />
-        <el-table-column prop="store_name" label="签单公司" show-overflow-tooltip />
+        <el-table-column prop="user_name" label="客户名称" show-overflow-tooltip />
+        <el-table-column prop="mobile" label="客户电话" />
         <el-table-column prop="award_name" label="获奖奖项" show-overflow-tooltip />
+        <el-table-column prop="store_name" label="签单公司" show-overflow-tooltip />
         <el-table-column prop="create_time" sortable label="中奖时间" />
         <el-table-column label="操作" fixed="right">
           <template #default="scope">
@@ -148,8 +149,8 @@ const { loading, count, dataList, params, getData, handleCurrentChange, handleSi
     pageSize: 15,
     store_id: '',
     mobile: '',
-    order_no: '',
     region_id: '',
+    lottery_award_id: '',
     create_time: '',
     create_time_start: '',
     create_time_end: '',
@@ -162,12 +163,14 @@ const searchMoreRef = ref()
 
 const regionList = ref([])
 const storeList = ref([])
+const awardList = ref([])
 
 // select数据,合并远程请求
 lottery_record.getSelect().then((res) => {
   if (res.code > 0) {
     regionList.value = res.result.region
     storeList.value = res.result.store
+    awardList.value = res.result.award
   } else {
     toast(res.message || 'Error', 'error')
   }
@@ -182,6 +185,7 @@ const resetFrom = () => {
   params.store_id = ''
   params.mobile = ''
   params.region_id = ''
+  params.lottery_award_id = ''
   params.create_time = ''
   params.create_time_start = ''
   params.create_time_end = ''
