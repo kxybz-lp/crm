@@ -83,7 +83,7 @@
       </el-form>
       <ListHeader ref="headerRef" :rule="{ export: 263 }" @ewm="createEwm" @export="exportExcel">
         <el-form class="search-form" :model="params" ref="searchRef" label-width="0px" size="default">
-          <el-form-item label="" prop="mobile">
+          <el-form-item label="" prop="mobile" v-show="!$store.state.isMobile">
             <el-input v-model="params.mobile" placeholder="输入客户手机号" clearable @clear="getData"> </el-input>
           </el-form-item>
           <el-form-item>
@@ -110,12 +110,12 @@
         v-loading="loading"
       >
         <el-table-column type="selection" prop="id" width="55" />
-        <el-table-column prop="user_name" label="客户名称" show-overflow-tooltip />
-        <el-table-column prop="mobile" label="客户电话" />
-        <el-table-column prop="award_name" label="获奖奖项" show-overflow-tooltip />
-        <el-table-column prop="store_name" label="签单公司" show-overflow-tooltip />
-        <el-table-column prop="create_time" sortable label="中奖时间" />
-        <el-table-column label="操作" fixed="right">
+        <el-table-column prop="user_name" label="客户名称" min-width="120" show-overflow-tooltip />
+        <el-table-column prop="mobile" label="客户电话" min-width="120" />
+        <el-table-column prop="award_name" label="获奖奖项" min-width="120" show-overflow-tooltip />
+        <el-table-column prop="store_name" label="签单公司" min-width="120" show-overflow-tooltip />
+        <el-table-column prop="create_time" min-width="160" sortable label="中奖时间" />
+        <el-table-column label="操作" min-width="120">
           <template #default="scope">
             <el-button v-permission="257" size="small" type="danger" @click="handleDelete(scope.row.id)"> 删除 </el-button>
           </template>
@@ -131,6 +131,16 @@
         @current-change="handleCurrentChange"
         @size-change="handleSizeChange"
         v-show="!$store.state.isMobile"
+      />
+      <el-pagination
+        @current-change="handleCurrentChange"
+        :current-page="params.page"
+        :page-size="params.pageSize"
+        :background="true"
+        :layout="'total, prev, next'"
+        :total="count"
+        class="fenye"
+        v-show="$store.state.isMobile"
       />
     </el-card>
   </div>

@@ -142,7 +142,7 @@
         @download="download"
       >
         <el-form class="search-form" :model="params" ref="searchRef" label-width="0px" size="default">
-          <el-form-item label="" prop="store_id">
+          <el-form-item label="" prop="store_id" v-show="!$store.state.isMobile">
             <el-input v-model="params.mobile" placeholder="输入客户电话" clearable @clear="getData"> </el-input>
           </el-form-item>
           <el-form-item>
@@ -169,11 +169,11 @@
         v-loading="loading"
       >
         <el-table-column type="selection" prop="id" width="55" />
-        <el-table-column prop="name" label="客户名称" show-overflow-tooltip />
-        <el-table-column prop="mobile" label="客户电话" />
+        <el-table-column prop="name" label="客户名称" min-width="120" show-overflow-tooltip />
+        <el-table-column prop="mobile" label="客户电话" min-width="120" />
         <!-- <el-table-column prop="sign_time" sortable label="签单时间" /> -->
         <!-- <el-table-column prop="order_no" label="订单编号" show-overflow-tooltip /> -->
-        <el-table-column prop="store_name" label="签单公司" show-overflow-tooltip />
+        <el-table-column prop="store_name" label="签单公司" min-width="120" show-overflow-tooltip />
         <!-- <el-table-column label="签单收据">
           <template #default="scope">
             <el-image style="width: 50px; height: 50px" :src="scope.row.receipt" fit="cover" @click="showImage(scope.row.receipt)" />
@@ -184,8 +184,8 @@
             <el-switch :modelValue="scope.row.status" :active-value="1" :inactive-value="0" :loading="scope.row.statusLoading" @change="handleSwitch($event, scope.row)" />
           </template>
         </el-table-column>
-        <el-table-column prop="create_time" sortable label="添加时间" />
-        <el-table-column label="操作" fixed="right">
+        <el-table-column prop="create_time" sortable label="添加时间" min-width="160" />
+        <el-table-column label="操作" min-width="140">
           <template #default="scope">
             <el-button v-permission="254" size="small" type="primary" @click="handleEdit(scope.row)"> 编辑 </el-button>
             <el-button v-permission="250" size="small" type="danger" @click="handleDelete(scope.row.id)"> 删除 </el-button>
@@ -202,6 +202,16 @@
         @current-change="handleCurrentChange"
         @size-change="handleSizeChange"
         v-show="!$store.state.isMobile"
+      />
+      <el-pagination
+        @current-change="handleCurrentChange"
+        :current-page="params.page"
+        :page-size="params.pageSize"
+        :background="true"
+        :layout="'total, prev, next'"
+        :total="count"
+        class="fenye"
+        v-show="$store.state.isMobile"
       />
     </el-card>
     <FormDialog destroyOnClose :title="'订单' + dialogTitle" ref="formDialogRef" @dialogClosed="dialogClosed" @submit="handleSubmit">

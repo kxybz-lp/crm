@@ -169,7 +169,7 @@
             </el-row>
           </template>
         </el-table-column>
-        <el-table-column prop="user_mobile" show-overflow-tooltip label="用户信息">
+        <el-table-column prop="user_mobile" show-overflow-tooltip label="用户信息" min-width="140">
           <template #default="scope">
             <el-row style="margin-bottom: 10px"
               ><span>{{ scope.row.user_name }}</span></el-row
@@ -181,7 +181,7 @@
         </el-table-column>
         <!-- <el-table-column prop="total_price" show-overflow-tooltip label="订单金额" /> -->
         <el-table-column prop="pay_price" show-overflow-tooltip label="实付款" />
-        <el-table-column sortable label="交易状态">
+        <el-table-column sortable label="交易状态" min-width="140">
           <template #default="scope">
             <el-row style="margin-bottom: 10px">
               <el-tag size="small" type="success" v-if="scope.row.pay_status == 20">已支付</el-tag>
@@ -202,8 +202,8 @@
             </el-row>
           </template>
         </el-table-column>
-        <el-table-column prop="create_time" show-overflow-tooltip label="下单时间" />
-        <el-table-column label="操作" fixed="right" width="240">
+        <el-table-column prop="create_time" min-width="160" show-overflow-tooltip label="下单时间" />
+        <el-table-column label="操作" width="240">
           <template #default="scope">
             <el-button size="small" type="success" v-permission="170" @click="handleDetail(scope.row.order_id)"> 详情 </el-button>
             <el-button

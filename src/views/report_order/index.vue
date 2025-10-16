@@ -134,7 +134,7 @@
         @download="download"
       >
         <el-form class="search-form" :model="params" ref="searchRef" label-width="0px" size="default">
-          <el-form-item label="" prop="report_store_id">
+          <el-form-item label="" prop="report_store_id" v-show="!$store.state.isMobile">
             <el-input v-model="params.order_no" placeholder="输入订单编号" clearable @clear="getData"> </el-input>
           </el-form-item>
           <el-form-item>
@@ -163,23 +163,23 @@
         <el-table-column type="selection" prop="id" width="55" />
         <!-- <el-table-column prop="customer_name" label="客户名称" show-overflow-tooltip /> -->
         <!-- <el-table-column prop="mobile" label="客户电话" /> -->
-        <el-table-column prop="order_no" label="订单编号" show-overflow-tooltip />
+        <el-table-column prop="order_no" min-width="120" label="订单编号" show-overflow-tooltip />
         <!-- <el-table-column prop="project_name" label="项目名称" show-overflow-tooltip /> -->
-        <el-table-column prop="store_name" label="签单公司" show-overflow-tooltip />
-        <el-table-column prop="sign_time" sortable label="签单日期" />
-        <el-table-column label="定金金额">
+        <el-table-column prop="store_name" label="签单公司" min-width="120" show-overflow-tooltip />
+        <el-table-column prop="sign_time" sortable min-width="120" label="签单日期" />
+        <el-table-column label="定金金额" min-width="120">
           <template #default="scope">
             <p>{{ scope.row.sign_amount ? scope.row.sign_amount : '' }}</p>
           </template>
         </el-table-column>
-        <el-table-column label="签单收据">
+        <el-table-column label="签单收据" min-width="120">
           <template #default="scope">
             <el-image style="width: 50px; height: 50px" :src="scope.row.receipt" fit="cover" @click="showImage(scope.row.receipt)" />
           </template>
         </el-table-column>
-        <el-table-column prop="create_time" sortable label="报单时间" />
+        <el-table-column prop="create_time" min-width="170" sortable label="报单时间" />
         <!-- <el-table-column prop="user_id" label="报单人" /> -->
-        <el-table-column label="操作" fixed="right">
+        <el-table-column label="操作" min-width="140">
           <template #default="scope">
             <el-button v-permission="221" size="small" type="primary" @click="handleEdit(scope.row)"> 编辑 </el-button>
             <el-button v-permission="225" size="small" type="danger" @click="handleDelete(scope.row.id)"> 删除 </el-button>
@@ -196,6 +196,16 @@
         @current-change="handleCurrentChange"
         @size-change="handleSizeChange"
         v-show="!$store.state.isMobile"
+      />
+      <el-pagination
+        @current-change="handleCurrentChange"
+        :current-page="params.page"
+        :page-size="params.pageSize"
+        :background="true"
+        :layout="'total, prev, next'"
+        :total="count"
+        class="fenye"
+        v-show="$store.state.isMobile"
       />
     </el-card>
     <FormDialog destroyOnClose :title="'订单' + dialogTitle" ref="formDialogRef" @dialogClosed="dialogClosed" @submit="handleSubmit">

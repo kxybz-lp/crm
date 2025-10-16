@@ -64,13 +64,13 @@
         v-loading="loading"
       >
         <el-table-column type="selection" prop="id" width="55" />
-        <el-table-column prop="store_name" label="公司名称" show-overflow-tooltip />
-        <el-table-column prop="goal" sortable label="签单目标" />
-        <el-table-column prop="charge_mobile" label="负责人电话" />
-        <el-table-column prop="bdr_mobile" label="报单人电话" />
+        <el-table-column prop="store_name" min-width="120" label="公司名称" show-overflow-tooltip />
+        <el-table-column prop="goal" sortable min-width="120" label="签单目标" />
+        <el-table-column prop="charge_mobile" min-width="120" label="负责人电话" />
+        <el-table-column prop="bdr_mobile" min-width="120" label="报单人电话" />
         <!-- <el-table-column prop="bmobile" label="承诺人电话" /> -->
-        <el-table-column prop="update_time" label="更新时间" />
-        <el-table-column label="操作" fixed="right">
+        <el-table-column prop="update_time" label="更新时间" min-width="160" />
+        <el-table-column label="操作" min-width="140">
           <template #default="scope">
             <el-button v-permission="234" size="small" type="primary" @click="handleEdit(scope.row)"> 编辑 </el-button>
             <el-button v-permission="233" size="small" type="danger" @click="handleDelete(scope.row.id)"> 删除 </el-button>

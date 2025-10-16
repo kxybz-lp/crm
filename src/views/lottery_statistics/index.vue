@@ -94,6 +94,7 @@
           <el-table-column prop="award_3" label="二等奖" sortable min-width="100" />
           <el-table-column prop="award_4" label="三等奖" sortable min-width="100" />
           <el-table-column prop="award_5" label="幸运奖" sortable min-width="100" />
+          <el-table-column prop="award_6" label="惊喜奖" sortable min-width="100" />
           <el-table-column prop="total" label="合计" sortable min-width="100" />
         </el-table>
       </div>

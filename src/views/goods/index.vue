@@ -5,18 +5,13 @@
         <el-tab-pane :label="item.name" :name="item.key" v-for="item in tabbars" :key="item.key" />
       </el-tabs>
       <ListHeader :rule="{ create: 157, move2: 179 }" @add="handleAdd" @move="handMove">
-        <el-form class="search-form" :model="params" ref="searchRef" label-width="0px"
-          size="default">
+        <el-form class="search-form" :model="params" ref="searchRef" label-width="0px" size="default">
           <el-form-item label="">
-            <el-input v-model="params.goods_name" placeholder="输入商品名" clearable @clear="getData(1)">
-            </el-input>
+            <el-input v-model="params.goods_name" placeholder="输入商品名" clearable @clear="getData(1)"> </el-input>
           </el-form-item>
-          <el-form-item label="">
-            <el-select v-model="params.category_id" placeholder="选择商品分类" filterable clearable
-              @clear="getData(1)">
-              <el-option :value="item.id" :label="item.name" v-for="item in categoryList"
-                :key="item.id">
-              </el-option>
+          <el-form-item label="" v-show="!$store.state.isMobile">
+            <el-select v-model="params.category_id" placeholder="选择商品分类" filterable clearable @clear="getData(1)">
+              <el-option :value="item.id" :label="item.name" v-for="item in categoryList" :key="item.id"> </el-option>
             </el-select>
           </el-form-item>
           <el-form-item>
@@ -24,63 +19,82 @@
           </el-form-item>
         </el-form>
       </ListHeader>
-      <el-table ref="multipleTableRef" :data="dataList" style="width: 100%"
+      <el-table
+        ref="multipleTableRef"
+        :data="dataList"
+        style="width: 100%"
         :header-cell-style="{ color: '#2c3e50', backgroundColor: '#f2f2f2' }"
-        @sort-change="sortChange" @selection-change="handleSelectionChange" v-loading="loading"
-        :element-loading-text="loadingText" tooltip-effect="light">
+        @sort-change="sortChange"
+        @selection-change="handleSelectionChange"
+        v-loading="loading"
+        :element-loading-text="loadingText"
+        tooltip-effect="light"
+      >
         <el-table-column type="selection" prop="goods_id" width="55" />
         <el-table-column prop="goods_id" label="商品ID" width="80" />
         <el-table-column label="商品图片" width="100">
           <template #default="scope">
-            <el-image style="width: 50px; height: 50px" :src="scope.row.goods_thumb" fit="fill"
-              :initial-index="0" :preview-src-list="scope.row.imageList" preview-teleported />
+            <el-image style="width: 50px; height: 50px" :src="scope.row.goods_thumb" fit="fill" :initial-index="0" :preview-src-list="scope.row.imageList" preview-teleported />
           </template>
         </el-table-column>
         <el-table-column prop="goods_name" label="商品名称" min-width="200" show-overflow-tooltip />
-        <el-table-column prop="goods_price" :formatter="priceFormatter" label="商品价格" sortable
-          min-width="140" />
+        <el-table-column prop="goods_price" :formatter="priceFormatter" label="商品价格" sortable min-width="140" />
         <el-table-column prop="sales_actual" label="商品销量" min-width="100" />
         <el-table-column prop="stock_num" label="商品总库存" min-width="100" />
         <el-table-column label="商品状态" v-permission="158">
           <template #default="scope">
-            <el-switch :modelValue="scope.row.goods_status" :active-value="10" :inactive-value="20"
-              inline-prompt active-text="上架" inactive-text="下架" :loading="scope.row.statusLoading"
-              @change="handleSwitch($event, scope.row)" />
+            <el-switch
+              :modelValue="scope.row.goods_status"
+              :active-value="10"
+              :inactive-value="20"
+              inline-prompt
+              active-text="上架"
+              inactive-text="下架"
+              :loading="scope.row.statusLoading"
+              @change="handleSwitch($event, scope.row)"
+            />
           </template>
         </el-table-column>
         <el-table-column prop="goods_sort" label="排序" width="100" />
         <el-table-column prop="create_time" label="添加时间" min-width="140" show-overflow-tooltip />
         <el-table-column label="操作" width="240">
           <template #default="scope">
-            <el-button v-permission="180" v-if="params.tab !== 'recyc'" size="small" type="warning"
-              @click="handlEwm(scope.row.goods_id)"> 生成二维码 </el-button>
-            <el-button v-permission="158" v-if="params.tab !== 'recyc'" size="small" type="primary"
-              @click="$router.push('/goods/edit/' + scope.row.goods_id)">
-              编辑 </el-button>
-            <el-button v-permission="180" v-if="params.tab !== 'recyc'" size="small" type="danger"
-              @click="handleDelete(scope.row.goods_id)"> 删除 </el-button>
-            <el-button v-if="params.tab == 'recyc'" v-permission="181" size="small" type="success"
-              @click="handleResave(scope.row.goods_id)">恢复 </el-button>
-            <el-button v-if="params.tab == 'recyc'" v-permission="182" size="small" type="danger"
-              @click="handleDel(scope.row.goods_id)"> 彻底删除 </el-button>
+            <el-button v-permission="180" v-if="params.tab !== 'recyc'" size="small" type="warning" @click="handlEwm(scope.row.goods_id)"> 生成二维码 </el-button>
+            <el-button v-permission="158" v-if="params.tab !== 'recyc'" size="small" type="primary" @click="$router.push('/goods/edit/' + scope.row.goods_id)"> 编辑 </el-button>
+            <el-button v-permission="180" v-if="params.tab !== 'recyc'" size="small" type="danger" @click="handleDelete(scope.row.goods_id)"> 删除 </el-button>
+            <el-button v-if="params.tab == 'recyc'" v-permission="181" size="small" type="success" @click="handleResave(scope.row.goods_id)">恢复 </el-button>
+            <el-button v-if="params.tab == 'recyc'" v-permission="182" size="small" type="danger" @click="handleDel(scope.row.goods_id)"> 彻底删除 </el-button>
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination v-model:current-page="params.page" v-model:page-size="params.pageSize"
-        :page-sizes="[10, 50, 100, 200]" :background="true"
-        layout="total, sizes, prev, pager, next,slot, jumper" :total="count"
-        @current-change="handleCurrentChange" @size-change="handleSizeChange" />
+      <el-pagination
+        v-model:current-page="params.page"
+        v-model:page-size="params.pageSize"
+        :page-sizes="[10, 50, 100, 200]"
+        :background="true"
+        v-show="!$store.state.isMobile"
+        layout="total, sizes, prev, pager, next,slot, jumper"
+        :total="count"
+        @current-change="handleCurrentChange"
+        @size-change="handleSizeChange"
+      />
+      <el-pagination
+        @current-change="handleCurrentChange"
+        :current-page="params.page"
+        :page-size="params.pageSize"
+        :background="true"
+        :layout="'total, prev, next'"
+        :total="count"
+        class="fenye"
+        v-show="$store.state.isMobile"
+      />
     </el-card>
-    <el-dialog v-model="dialogMoveVisible" destroy-on-close title="批量操作" width="60%"
-      @close="moveDialogClose">
+    <el-dialog v-model="dialogMoveVisible" destroy-on-close title="批量操作" width="60%" @close="moveDialogClose">
       <div class="main">
         <el-form :model="moveForm" ref="moveFormRef" label-width="80px">
           <el-form-item label="分类" prop="category_id" v-if="moveTab == 1">
-            <el-select v-model="moveForm.category_id" placeholder="选择商品分类" filterable clearable
-              @clear="getData(1)">
-              <el-option :value="item.id" :label="item.name" v-for="item in categoryList"
-                :key="item.id">
-              </el-option>
+            <el-select v-model="moveForm.category_id" placeholder="选择商品分类" filterable clearable @clear="getData(1)">
+              <el-option :value="item.id" :label="item.name" v-for="item in categoryList" :key="item.id"> </el-option>
             </el-select>
           </el-form-item>
         </el-form>
@@ -97,12 +111,11 @@
       <!-- <el-image ref="imageRef" style="width: 100px; height: 100px" :src="url" :zoom-rate="1.2"
         :max-scale="7" :min-scale="0.2" :preview-src-list="srcList" show-progress :initial-index="0"
         fit="cover" /> -->
-      <el-image-viewer v-if="showPreview" :url-list="srcList" :initial-index="0"
-        @close="hidePreview" />
+      <el-image-viewer v-if="showPreview" :url-list="srcList" :initial-index="0" @close="hidePreview" />
     </div>
   </div>
 </template>
-  <script setup>
+<script setup>
 import ListHeader from '@/components/ListHeader.vue'
 import { ref, reactive, watch } from 'vue'
 import goods from '@/api/goods'

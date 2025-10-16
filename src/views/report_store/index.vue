@@ -86,18 +86,18 @@
         v-loading="loading"
       >
         <el-table-column type="selection" prop="id" width="55" />
-        <el-table-column prop="name" label="公司名称" show-overflow-tooltip />
-        <el-table-column prop="region_name" show-overflow-tooltip label="一级区域" />
-        <el-table-column prop="province_name" show-overflow-tooltip label="省" />
-        <el-table-column prop="city_name" show-overflow-tooltip label="市" />
-        <el-table-column prop="district_name" label="区" width="140" />
-        <el-table-column prop="address" show-overflow-tooltip label="详细地址" width="180" />
+        <el-table-column prop="name" label="公司名称" min-width="120" show-overflow-tooltip />
+        <el-table-column prop="region_name" min-width="120" show-overflow-tooltip label="一级区域" />
+        <el-table-column prop="province_name" min-width="120" show-overflow-tooltip label="省" />
+        <el-table-column prop="city_name" min-width="120" show-overflow-tooltip label="市" />
+        <!-- <el-table-column prop="district_name" label="区" min-width="140" /> -->
+        <!-- <el-table-column prop="address" show-overflow-tooltip label="详细地址" width="180" /> -->
         <el-table-column label="状态" v-permission="230">
           <template #default="scope">
             <el-switch :modelValue="scope.row.status" :active-value="1" :inactive-value="0" :loading="scope.row.statusLoading" @change="handleSwitch($event, scope.row)" />
           </template>
         </el-table-column>
-        <el-table-column label="操作" fixed="right">
+        <el-table-column label="操作" min-width="140">
           <template #default="scope">
             <el-button v-permission="230" size="small" :disabled="scope.row.id == 10001" type="primary" @click="handleEdit(scope.row)"> 编辑 </el-button>
             <el-button v-permission="226" size="small" :disabled="scope.row.id == 10001" type="danger" @click="handleDelete(scope.row.id)"> 删除 </el-button>
@@ -114,6 +114,16 @@
         @current-change="handleCurrentChange"
         @size-change="handleSizeChange"
         v-show="!$store.state.isMobile"
+      />
+      <el-pagination
+        @current-change="handleCurrentChange"
+        :current-page="params.page"
+        :page-size="params.pageSize"
+        :background="true"
+        :layout="'total, prev, next'"
+        :total="count"
+        class="fenye"
+        v-show="$store.state.isMobile"
       />
     </el-card>
     <FormDialog destroyOnClose :title="'门店' + dialogTitle" ref="formDialogRef" @dialogClosed="dialogClosed" @submit="handleSubmit">
