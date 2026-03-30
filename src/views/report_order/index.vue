@@ -3,11 +3,11 @@
     <el-card class="admin-card" shadow="hover">
       <el-form class="search-more" :model="params" ref="searchMoreRef" size="default" label-width="68px" v-if="showSearch" :label-position="$store.state.isMobile ? 'top' : 'left'">
         <el-row :gutter="20">
-          <!-- <el-col :md="6" :offset="0">
+          <el-col :md="6" :offset="0">
             <el-form-item label="客户电话">
               <el-input v-model="params.mobile" placeholder="输入客户电话" clearable @clear="getData"> </el-input>
             </el-form-item>
-          </el-col> -->
+          </el-col>
           <el-col :md="6" :offset="0">
             <el-form-item label="订单标号">
               <el-input v-model="params.order_no" placeholder="输入订单标号" clearable @clear="getData"> </el-input>
@@ -69,8 +69,6 @@
               </template>
             </el-form-item>
           </el-col>
-        </el-row>
-        <el-row :gutter="20">
           <el-col :md="6" :offset="0">
             <el-form-item label="签单日期">
               <template v-if="!$store.state.isMobile">
@@ -161,17 +159,17 @@
         v-loading="loading"
       >
         <el-table-column type="selection" prop="id" width="55" />
-        <!-- <el-table-column prop="customer_name" label="客户名称" show-overflow-tooltip /> -->
-        <!-- <el-table-column prop="mobile" label="客户电话" /> -->
-        <el-table-column prop="order_no" min-width="120" label="订单编号" show-overflow-tooltip />
+        <!-- <el-table-column prop="order_no" min-width="120" label="订单编号" show-overflow-tooltip /> -->
+        <el-table-column prop="name" label="客户名称" show-overflow-tooltip />
+        <el-table-column prop="mobile" min-width="120" label="客户电话" />
         <!-- <el-table-column prop="project_name" label="项目名称" show-overflow-tooltip /> -->
         <el-table-column prop="store_name" label="签单公司" min-width="120" show-overflow-tooltip />
         <el-table-column prop="sign_time" sortable min-width="120" label="签单日期" />
-        <el-table-column label="定金金额" min-width="120">
+        <!-- <el-table-column label="定金金额" min-width="120">
           <template #default="scope">
             <p>{{ scope.row.sign_amount ? scope.row.sign_amount : '' }}</p>
           </template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column label="签单收据" min-width="120">
           <template #default="scope">
             <el-image style="width: 50px; height: 50px" :src="scope.row.receipt" fit="cover" @click="showImage(scope.row.receipt)" />
@@ -210,12 +208,12 @@
     </el-card>
     <FormDialog destroyOnClose :title="'订单' + dialogTitle" ref="formDialogRef" @dialogClosed="dialogClosed" @submit="handleSubmit">
       <el-form :model="form" ref="formRef" :rules="rules" label-width="140px" :label-position="$store.state.isMobile ? 'top' : 'right'">
-        <!-- <el-form-item label="客户名称">
-          <el-input v-model="form.customer_name"></el-input>
+        <el-form-item label="客户名称" prop="name">
+          <el-input v-model="form.name"></el-input>
         </el-form-item>
         <el-form-item label="客户电话" prop="mobile">
           <el-input v-model="form.mobile"></el-input>
-        </el-form-item> -->
+        </el-form-item>
         <el-form-item label="签单公司" prop="report_store_id">
           <el-select clearable filterable v-model="form.report_store_id" placeholder="选择公司">
             <el-option :value="item.id" :label="item.name" :disabled="item.status == 0" v-for="item in storeList" :key="item.id"></el-option>
@@ -227,9 +225,9 @@
         <el-form-item label="签单日期" prop="sign_time">
           <el-date-picker style="width: 100%" v-model="form.sign_time" type="datetime" placeholder="请选择签单日期" format="YYYY-MM-DD" value-format="YYYY-MM-DD" :editable="false" clearable />
         </el-form-item>
-        <el-form-item label="定金金额">
+        <!-- <el-form-item label="定金金额">
           <el-input type="number" v-model="form.sign_amount"></el-input>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="签单收据" prop="receipt">
           <ChooseImage v-model="form.receipt" />
         </el-form-item>
@@ -246,7 +244,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import ListHeader from '@/components/ListHeader.vue'
 import ChooseImage from '@/components/ChooseImage.vue'
 import report_order from '@/api/report_order'
@@ -258,6 +256,7 @@ const { loading, count, dataList, params, getData, handleCurrentChange, handleSi
     page: 1,
     pageSize: 15,
     report_store_id: '',
+    name: '',
     mobile: '',
     order_no: '',
     region_id: '',
@@ -278,7 +277,7 @@ const { dialogTitle, formDialogRef, formRef, rules, form, editId, handleAdd, han
   getData,
   form: {
     report_store_id: '',
-    customer_name: '',
+    name: '',
     project_name: '',
     mobile: '',
     status: 1,
@@ -294,13 +293,13 @@ const { dialogTitle, formDialogRef, formRef, rules, form, editId, handleAdd, han
         trigger: 'blur',
       },
     ],
-    // customer_name: [
-    //   {
-    //     required: true,
-    //     message: '客户名称不能为空',
-    //     trigger: 'blur',
-    //   },
-    // ],
+    name: [
+      {
+        required: true,
+        message: '客户名称不能为空',
+        trigger: 'blur',
+      },
+    ],
     // project_name: [
     //   {
     //     required: true,
@@ -368,6 +367,7 @@ const resetFrom = () => {
   params.page = 1
   params.pageSize = 15
   params.report_store_id = ''
+  params.name = ''
   params.mobile = ''
   params.region_id = ''
   params.create_time = ''

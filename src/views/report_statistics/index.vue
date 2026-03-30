@@ -110,8 +110,8 @@
           <el-table-column prop="per" label="总目标完成率" sortable min-width="100" v-if="params.type === 'report'">
             <template #default="scope"> {{ scope.row.per }}% </template>
           </el-table-column>
-          <el-table-column prop="order_count_state" label="三阶段签单数" sortable min-width="100" v-if="params.type === 'report'" />
-          <el-table-column prop="per_state" label="三阶段完成率" sortable min-width="100" v-if="params.type === 'report'">
+          <el-table-column prop="order_count_state" label="一阶段签单数" sortable min-width="100" v-if="params.type === 'report'" />
+          <el-table-column prop="per_state" label="一阶段完成率" sortable min-width="100" v-if="params.type === 'report'">
             <template #default="scope"> {{ scope.row.per_state }}% </template>
           </el-table-column>
           <el-table-column prop="goal" label="活动总目标" sortable min-width="100" v-if="params.type === 'report'" />
@@ -124,10 +124,10 @@
   </div>
 </template>
 <script setup>
-import { reactive, ref, computed } from 'vue'
+import { reactive, ref } from 'vue'
 import moment from 'moment'
 import report_order from '@/api/report_order'
-import { closeElLoading, createUniqueString, elLoading, toast, time_init, changeTimeType, param } from '@/utils/utils'
+import { closeElLoading, createUniqueString, elLoading, toast, time_init } from '@/utils/utils'
 import * as FileSaver from 'file-saver'
 import * as XLSX from 'xlsx'
 import { useStore } from 'vuex'
@@ -225,13 +225,13 @@ const setStage = (val) => {
   params.scope = 'all'
   switch (val) {
     case '1':
-      params.create_time = ['2025-08-29', '2025-09-14']
+      params.create_time = ['2026-03-27', '2026-04-12']
       break
     case '2':
-      params.create_time = ['2025-09-15', '2025-09-28']
+      params.create_time = ['2026-04-13', '2026-04-30']
       break
     case '3':
-      params.create_time = ['2025-09-29', '2025-10-19']
+      params.create_time = ['2026-05-01', '2026-05-17']
       break
     default:
       params.create_time = ''

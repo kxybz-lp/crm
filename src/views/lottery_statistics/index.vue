@@ -105,7 +105,7 @@
 import { reactive, ref, computed } from 'vue'
 import moment from 'moment'
 import lottery_record from '@/api/lottery_record'
-import { closeElLoading, createUniqueString, elLoading, toast, time_init, changeTimeType, param } from '@/utils/utils'
+import { closeElLoading, createUniqueString, elLoading, toast, time_init, param } from '@/utils/utils'
 import * as FileSaver from 'file-saver'
 import * as XLSX from 'xlsx'
 import { useStore } from 'vuex'
