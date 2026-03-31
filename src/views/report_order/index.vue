@@ -133,7 +133,7 @@
       >
         <el-form class="search-form" :model="params" ref="searchRef" label-width="0px" size="default">
           <el-form-item label="" prop="report_store_id" v-show="!$store.state.isMobile">
-            <el-input v-model="params.order_no" placeholder="输入订单编号" clearable @clear="getData"> </el-input>
+            <el-input v-model="params.mobile" placeholder="输入客户电话" clearable @clear="getData"> </el-input>
           </el-form-item>
           <el-form-item>
             <el-button v-show="!showSearch && !$store.state.isMobile" type="primary" @click="getData(1)">搜索</el-button>
