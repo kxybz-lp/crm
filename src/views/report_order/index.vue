@@ -234,6 +234,18 @@
         <el-form-item label="状态">
           <el-switch v-model="form.status" :active-value="1" :inactive-value="0" />
         </el-form-item>
+        <el-form-item label="报单时间" prop="create_time">
+          <el-date-picker
+            style="width: 100%"
+            v-model="form.create_time"
+            type="datetime"
+            placeholder="请选择报单时间"
+            format="YYYY-MM-DD HH:mm:ss"
+            value-format="YYYY-MM-DD HH:mm:ss"
+            :editable="false"
+            clearable
+          />
+        </el-form-item>
       </el-form>
     </FormDialog>
     <!-- 图片预览 -->
@@ -284,6 +296,7 @@ const { dialogTitle, formDialogRef, formRef, rules, form, editId, handleAdd, han
     sign_amount: '',
     sign_time: '',
     receipt: '',
+    create_time: '',
   },
   rules: {
     report_store_id: [
